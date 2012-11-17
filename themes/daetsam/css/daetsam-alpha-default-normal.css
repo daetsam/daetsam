@@ -1,0 +1,198 @@
+/* This file will hold styles that are loaded using the same media query as the normal grid. */
+/* If you are using the default media queries provided by Omega, these styles will also
+ *  apply to the widescreen layout unless they are overridden by the widescreen styles. */
+
+
+/* ######################################################################
+   General
+   ###################################################################### */
+
+/* ======================================================================
+   Texto
+   ====================================================================== */
+
+body {
+  font-size: 81.25%;  /* 1em = 13px */
+}
+
+h1 {
+  font-size: 1.15384em; /* = 15px */
+}
+
+h2 {
+  font-size: 1.0769em; /* = 14px */
+}
+
+h2.block-title {
+  font-size: 1.0769em; /* = 14px */
+}
+
+h2.node-title {
+  font-size: 1.0769em; /* = 14px */
+}
+
+h3 {
+  font-size: 1.0769em; /* = 14px */
+}
+
+h4 {
+  font-size: 1.0769em; /* = 14px */
+}
+
+h5 {
+  font-size: 1em; /* = 13px */
+}
+
+h6 {
+  font-size: 1em; /* = 13px */
+}
+
+pre {
+  font-size: 12px;
+}
+
+pre, code, kbd, tt, var, samp {
+  font-size: 12px;
+}
+
+pre code {
+  font-size: 12px;
+}
+
+code {
+  font-size: 12px;
+}
+
+footer.submitted {
+  font-size: .846em; /* = 11px */
+}
+
+
+/* ######################################################################
+   Secci—n 'Header'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Menu'
+   ====================================================================== */
+
+/* ----------------------------------------------------------------------
+   Regi—n 'Logo'
+   ---------------------------------------------------------------------- */
+
+.reg-logo img { /* Ancho imagen logo = 126px */
+  width: 90%;
+}
+
+/* ----------------------------------------------------------------------
+   Regiones 'Menu 1', 'Menu 2', 'Menu 3', 'Menu 4'
+   ---------------------------------------------------------------------- */
+
+.reg-menu-salto-linea h2.block-title { /* Fuerza el salto de l’nea en t’tulos de menœ largos */
+  width: 60%;
+  margin-left: 40%;
+}
+
+/* ----------------------------------------------------------------------
+   Regi—n 'Search Bar'
+   ---------------------------------------------------------------------- */
+
+.redes-sociales {
+  margin-bottom: .538em; /* = 7px */
+}
+
+img.logos-redes-sociales {
+  width: 20px;
+  margin-left: 10px;
+}
+
+.reg-search-bar input[type="text"] {
+  width: 75%; /* Ajusta el ancho de la barra de bœsqueda */
+  height: 1.692em; /* Estrecha la altura de la barra de bœsqueda a 22px */
+}
+
+/* ======================================================================
+   Zona 'Menu Bottom'
+   ====================================================================== */
+
+.zon-menu-bottom {
+  margin-top: .923em; /* = 12px */
+}
+
+.zon-menu-bottom p {
+  font-size: .846em; /* = 11px */
+  line-height: normal;
+  padding-bottom: 0;
+}
+
+/* ======================================================================
+   Zona 'Header'
+   ====================================================================== */
+
+.zon-header {
+  margin-bottom: .2307em; /* = 3px */
+}
+
+/* ----------------------------------------------------------------------
+   Regi—n 'Header Top'
+   ---------------------------------------------------------------------- */
+
+.reg-header-top h1 {
+  font-size: 7.538em; /* = 98px */
+  line-height: .9388; /* = 92px */
+  padding-bottom: 0.0306em; /* = 3px */
+}
+
+
+/* ######################################################################
+   Secci—n 'Content'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Content'
+   ====================================================================== */
+
+.zon-content {
+  margin-top: .3077em; /* = 4px */
+}
+
+.zon-content .content {
+  margin-bottom: .53846em; /* = 7px */
+}
+
+/* ----------------------------------------------------------------------
+   Regi—n 'Sidebar First'
+   ---------------------------------------------------------------------- */
+
+.reg-sidebar-first-submenu li { /* Ajusta la separaci—n entre los elementos de submenœ */
+  line-height: .923; /* = 12px */
+  padding-bottom: .3077em; /* = 4px */
+}
+
+.reg-sidebar-first-submenu hr {
+  margin-top: .3077em; /* = 4px */
+}
+
+
+/* ######################################################################
+   Secci—n 'Footer'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Footer'
+   ====================================================================== */
+
+.zon-footer p {
+  font-size: .846em; /* = 11px */
+  line-height: normal;
+  padding-bottom: 0;
+}
+
+/* ----------------------------------------------------------------------
+   Regi—n 'Footer Second'
+   ---------------------------------------------------------------------- */
+
+.reg-footer-second img {
+  width: 21.74%; /* Ancho imagen logo completo = 100px */
+  margin-top: .3846em; /* = 5px */
+}
