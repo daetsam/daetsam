@@ -340,7 +340,8 @@ textarea:active {
   color: #999;
 }
 
-.reg-menu a:active {
+.reg-menu a:active,
+.reg-menu .active-trail a {
   text-decoration: line-through;
 }
 
@@ -473,6 +474,12 @@ img.logos-redes-sociales {
   text-transform: uppercase;
   margin-bottom: 0;
 }
+.reg-header-top h1 a {
+	color:#000;
+}
+.reg-header-top h1 a:hover {
+	color:#999;
+}
 
 .reg-header-top h1 .mayuscula-acento { /* Cambia el texto a versalitas (para usarlo en las vocales con acento en los títulos grandes de los apartados) */
   text-transform: none;
@@ -497,7 +504,6 @@ img.logos-redes-sociales {
 /* ======================================================================
    Zona 'Content'
    ====================================================================== */
-
 .zon-content {
   margin-top: .25em; /* = 3px */
 }
@@ -537,7 +543,8 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
   color: #999;
 }
 
-.reg-sidebar-first-submenu a:active {
+.reg-sidebar-first-submenu a:active,
+.reg-sidebar-first-submenu .active-trail a {
   text-decoration: line-through;
 }
 
@@ -549,6 +556,14 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
   margin-top: .334em; /* = 4px */
   background-color: #000;
   height: 3px;
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Content'
+   ---------------------------------------------------------------------- */
+
+.reg-content h1#page-title {
+	text-transform:uppercase;
 }
 
 
