@@ -9,7 +9,7 @@
 /* ======================================================================
    Texto
    (Sobreescribe algunos estilos de 'omega/omega/css/omega-text.css' y
-   añade otros nuevos)
+   a√±ade otros nuevos)
    ====================================================================== */
 
 body {
@@ -65,17 +65,20 @@ h2.node-title {
 h3 {
   font-size: 1.083em; /* = 13px */
   color: #666;
+  margin-top: 1.25em;
 }
 
 h4 {
   font-size: 1.083em; /* = 13px */
   color: #999;
+  margin-top: 1.083333em;
 }
 
 h5 {
   font-size: 1em; /* = 12px */
   font-weight: normal;
   text-transform: uppercase;
+  margin-top: .916666em;
 }
 
 h6 {
@@ -83,6 +86,7 @@ h6 {
   font-weight: normal;
   text-transform: uppercase;
   color: #666;
+  margin-top: .75em;
 }
 
 p, dl, hr, h1, h2, h3, h4, h5, h6, ol,
@@ -212,7 +216,7 @@ footer.submitted {
 }
 
 /* ======================================================================
-   Botones, áreas de texto, introducción de datos, etc.
+   Botones, √°reas de texto, introducci√≥n de datos, etc.
    (Sobreescribe 'omega/omega/css/formalize.css')
    ====================================================================== */
 
@@ -230,7 +234,7 @@ input[type="button"] {
 button:hover,
 input[type="reset"]:hover,
 input[type="submit"]:hover,
-input[type="button"]:hover { /* Estilo añadido para cambiar de color al pasar el puntero por encima */
+input[type="button"]:hover { /* Estilo a√±adido para cambiar de color al pasar el puntero por encima */
   color: #999;
 }
 
@@ -292,7 +296,7 @@ textarea:active {
 
 
 /* ######################################################################
-   Sección 'Header'
+   Secci√≥n 'Header'
    ###################################################################### */
 
 /* ======================================================================
@@ -300,7 +304,7 @@ textarea:active {
    ====================================================================== */
 
 /* ----------------------------------------------------------------------
-   Región 'Logo'
+   Regi√≥n 'Logo'
    ---------------------------------------------------------------------- */
 
 .reg-logo div.block-image {
@@ -316,11 +320,11 @@ textarea:active {
    Regiones 'Menu 1', 'Menu 2', 'Menu 3', 'Menu 4'
    ---------------------------------------------------------------------- */
 
-.reg-menu { /* Convierte el texto de los elementos y títulos de menú a minúsculas */
+.reg-menu { /* Convierte el texto de los elementos y t√≠tulos de men√∫ a min√∫sculas */
   text-transform: lowercase;
 }
 
-.reg-menu h2 { /* Convierte el texto de los títulos de menú a negrita y al mismo tamaño de letra que los elementos */
+.reg-menu h2 { /* Convierte el texto de los t√≠tulos de men√∫ a negrita y al mismo tama√±o de letra que los elementos */
   font-size: 1em;
   font-weight: bold;
   color: #000;
@@ -336,39 +340,43 @@ textarea:active {
   color: #999;
 }
 
-.reg-menu-separador { /* Añade una línea de separación entre menús en la versión móvil */
+.reg-menu a:active {
+  text-decoration: line-through;
+}
+
+.reg-menu-separador { /* A√±ade una l√≠nea de separaci√≥n entre men√∫s en la versi√≥n m√≥vil */
   margin-bottom: .5em; /* = 6px */
   padding-bottom: .5em; /* = 6px */
   border-bottom: 1px dotted #ccc;
 }
 
-.reg-menu .nolink { /* Cambia a gris el color de los elementos de menú sin enlace */
+.reg-menu .nolink { /* Cambia a gris el color de los elementos de men√∫ sin enlace */
   color: #eee;
 }
 
-body .reg-menu li { /* Ajusta la separación entre los elementos de menú */
+body .reg-menu li { /* Ajusta la separaci√≥n entre los elementos de men√∫ */
   line-height: 1;
   padding-bottom: .25em; /* = 3px */
 }
 
-body .reg-menu h2.block-title { /* Ajusta la separación entre los elementos de menú y el título */
+body .reg-menu h2.block-title { /* Ajusta la separaci√≥n entre los elementos de men√∫ y el t√≠tulo */
   line-height: 1;
   padding-bottom: .25em; /* = 3px */
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Search Bar'
+   Regi√≥n 'Search Bar'
    ---------------------------------------------------------------------- */
 
 .reg-search-bar {
   margin-top: 1.5em; /* = 18px */
   margin-bottom: 1em; /* = 12px */
-  overflow: hidden; /* Para poder poner la barra de búsqueda en la misma línea que los enlaces de redes sociales */
+  overflow: hidden; /* Para poder poner la barra de b√∫squeda en la misma l√≠nea que los enlaces de redes sociales */
 }
 
 .redes-sociales {
   margin-left: 2px;
-  float: left; /* Para poder poner la barra de búsqueda en la misma línea que los enlaces de redes sociales */
+  float: left; /* Para poder poner la barra de b√∫squeda en la misma l√≠nea que los enlaces de redes sociales */
 }
 
 img.logos-redes-sociales {
@@ -378,13 +386,13 @@ img.logos-redes-sociales {
 }
 
 .reg-search-bar input[type="text"] {
-  width: 35%; /* Ajusta el ancho de la barra de búsqueda */
-  height: 1.75em; /* Estrecha la altura de la barra de búsqueda a 21px */
-  float: left; /* Barra de búsqueda alineada con los enlaces de redes sociales */
+  width: 35%; /* Ajusta el ancho de la barra de b√∫squeda */
+  height: 1.75em; /* Estrecha la altura de la barra de b√∫squeda a 21px */
+  float: left; /* Barra de b√∫squeda alineada con los enlaces de redes sociales */
   margin: 1px 0 0 6px;
 }
 
-.reg-search-bar .clearfix:after { /* Para poder poner la barra de búsqueda en la misma línea que los enlaces de redes sociales */
+.reg-search-bar .clearfix:after { /* Para poder poner la barra de b√∫squeda en la misma l√≠nea que los enlaces de redes sociales */
   clear: none;
 }
 
@@ -428,15 +436,15 @@ img.logos-redes-sociales {
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Menu Bottom Top'
+   Regi√≥n 'Menu Bottom Top'
    ---------------------------------------------------------------------- */
 
-.reg-menu-bottom-top hr { /* Oculta la línea superior de la franja */
+.reg-menu-bottom-top hr { /* Oculta la l√≠nea superior de la franja */
   display: none;
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Menu Bottom Bottom'
+   Regi√≥n 'Menu Bottom Bottom'
    ---------------------------------------------------------------------- */
 
 .reg-menu-bottom-bottom {
@@ -452,7 +460,7 @@ img.logos-redes-sociales {
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Header Top'
+   Regi√≥n 'Header Top'
    ---------------------------------------------------------------------- */
 
 .reg-header-top h1 {
@@ -466,13 +474,13 @@ img.logos-redes-sociales {
   margin-bottom: 0;
 }
 
-.reg-header-top h1 .mayuscula-acento { /* Cambia el texto a versalitas (para usarlo en las vocales con acento en los títulos grandes de los apartados) */
+.reg-header-top h1 .mayuscula-acento { /* Cambia el texto a versalitas (para usarlo en las vocales con acento en los t√≠tulos grandes de los apartados) */
   text-transform: none;
   font-variant: small-caps;
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Header Bottom'
+   Regi√≥n 'Header Bottom'
    ---------------------------------------------------------------------- */
 
 .reg-header-bottom hr {
@@ -483,7 +491,7 @@ img.logos-redes-sociales {
 
 
 /* ######################################################################
-   Sección 'Content'
+   Secci√≥n 'Content'
    ###################################################################### */
 
 /* ======================================================================
@@ -498,23 +506,23 @@ img.logos-redes-sociales {
   margin-bottom: .5em; /* = 6px */
 }
 
-.alpha { /* Permite que los elementos de una vista organizados en columnas de rejilla puedan colocarse ocupando todas las columnas (módulo Views Column Class) */
+.alpha { /* Permite que los elementos de una vista organizados en columnas de rejilla puedan colocarse ocupando todas las columnas (m√≥dulo Views Column Class) */
   clear: left;
 }
 
-li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión móvil */
+li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versi√≥n m√≥vil */
   list-style: none;
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Sidebar First'
+   Regi√≥n 'Sidebar First'
    ---------------------------------------------------------------------- */
 
-.reg-sidebar-first-submenu { /* Convierte el texto de los elementos de submenú a mayúsculas */
+.reg-sidebar-first-submenu { /* Convierte el texto de los elementos de submen√∫ a may√∫sculas */
   text-transform: uppercase;
 }
 
-.reg-sidebar-first-submenu li { /* Ajusta la separación entre los elementos de submenú */
+.reg-sidebar-first-submenu li { /* Ajusta la separaci√≥n entre los elementos de submen√∫ */
   line-height: .917; /* = 11px */
   padding-bottom: .25em; /* = 3px */
 }
@@ -529,7 +537,11 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión 
   color: #999;
 }
 
-.reg-sidebar-first-submenu .nolink { /* Cambia a gris el color de los elementos de submenú sin enlace */
+.reg-sidebar-first-submenu a:active {
+  text-decoration: line-through;
+}
+
+.reg-sidebar-first-submenu .nolink { /* Cambia a gris el color de los elementos de submen√∫ sin enlace */
  color: #eee;
 }
 
@@ -541,7 +553,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión 
 
 
 /* ######################################################################
-   Sección 'Footer'
+   Secci√≥n 'Footer'
    ###################################################################### */
 
 /* ======================================================================
@@ -570,7 +582,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión 
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Footer Top'
+   Regi√≥n 'Footer Top'
    ---------------------------------------------------------------------- */
 
 .reg-footer-top hr {
@@ -581,7 +593,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión 
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Footer First'
+   Regi√≥n 'Footer First'
    ---------------------------------------------------------------------- */
 
 .reg-footer-first p {
@@ -590,11 +602,11 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión 
 }
 
 /* ----------------------------------------------------------------------
-   Región 'Footer Second'
+   Regi√≥n 'Footer Second'
    ---------------------------------------------------------------------- */
 
 .reg-footer-second div.block-image {
-  width: 14.25%; /* Ancho máximo imagen logo completo = 100px */
+  width: 14.25%; /* Ancho m√°ximo imagen logo completo = 100px */
   margin: auto;
 }
 
