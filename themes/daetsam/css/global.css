@@ -295,13 +295,16 @@ textarea:active {
 }
 
 /* ======================================================================
-   Imágenes
+   Imágenes y clases específicas como item-list
    (Sobreescribe 'omega/alpha/css/alpha-alpha.css')
    ====================================================================== */
 img {
   max-width:100%;
 }
 
+.item-list ul li {
+	margin:0;
+}
 
 /* ######################################################################
    Sección 'Header'
