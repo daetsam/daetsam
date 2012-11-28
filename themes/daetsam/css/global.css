@@ -71,7 +71,6 @@ h2 {
 
 h2.block-title {
   font-weight: bold;
-  text-transform: none;
   margin-top: 0;
 }
 
@@ -79,7 +78,6 @@ h2.node-title {
   font-size: 1.083em; /* = 13px */
   color: #000;
   font-weight: bold;
-  text-transform: none;
   text-decoration: none;
   margin-top: 0;
 }
@@ -327,6 +325,20 @@ textarea:active {
 
 img {
   max-width:100%;
+}
+
+.video-container {
+  height:0px;
+  width:100%;
+  padding-top:56.25%; /* Relación: 16/9 = 56.25% */
+  position:relative;
+}
+.video-container iframe {
+  position:absolute;
+  height:100%;
+  width:100%;
+  top:0px;
+  left:0px;
 }
 
 .item-list ul li {
@@ -669,4 +681,28 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 
 .reg-footer-second img {
   width: 100%;
+}
+
+
+
+/* ######################################################################
+   Específico para bloques
+   ###################################################################### */
+
+/* ======================================================================
+   Bloque vista 'asociaciones 1'
+   Bloque vista 'asociaciones 2'
+   ====================================================================== */
+#block-views-asociaciones-block-1 .item-list ul li,
+#block-views-asociaciones-block-2 .item-list ul li {
+	margin-bottom:10px;
+	border-bottom:#000 3px solid;
+}
+#block-views-asociaciones-block-1 .item-list ul li h2,
+#block-views-asociaciones-block-2 .item-list ul li h2 {
+	margin-top:0;
+}
+#block-views-asociaciones-block-1 .views-field-field-imagen,
+#block-views-asociaciones-block-2 .views-field-field-imagen {
+	text-align:center;
 }
