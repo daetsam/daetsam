@@ -17,6 +17,18 @@ body {
   line-height: 1.416667; /* = 17px */
 }
 
+p,
+dl,
+hr,
+h1, h2, h3, h4, h5, h6,
+ol, ul,
+pre,
+table,
+address,
+fieldset {
+  margin-bottom: .5em;
+}
+
 a:link, a:visited {
   color: #666;
   text-decoration: none;
@@ -36,8 +48,8 @@ a:hover {
 }
 
 hr {
-  margin: 3px 0;
-  background: #ccc;
+  margin-top: 1.5em;
+  background: #eee;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -51,34 +63,44 @@ h1 {
 
 h2 {
   font-size: 1.083em; /* = 13px */
+  color: #333;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin-top: 2em;
 }
 
 h2.block-title {
-  font-size: 1.083em; /* = 13px */
-  color: #333;
+  font-weight: bold;
+  text-transform: none;
+  margin-top: 0;
 }
 
 h2.node-title {
   font-size: 1.083em; /* = 13px */
+  color: #000;
+  font-weight: bold;
+  text-transform: none;
+  text-decoration: none;
+  margin-top: 0;
 }
 
 h3 {
   font-size: 1.083em; /* = 13px */
   color: #666;
-  margin-top: 1.25em;
+  margin-top: 1em;
 }
 
 h4 {
   font-size: 1.083em; /* = 13px */
   color: #999;
-  margin-top: 1.083333em;
+  margin-top: 1em;
 }
 
 h5 {
   font-size: 1em; /* = 12px */
   font-weight: normal;
   text-transform: uppercase;
-  margin-top: .916666em;
+  margin-top: 1em;
 }
 
 h6 {
@@ -86,23 +108,20 @@ h6 {
   font-weight: normal;
   text-transform: uppercase;
   color: #666;
-  margin-top: .75em;
-}
-
-p, dl, hr, h1, h2, h3, h4, h5, h6, ol,
-ul, pre, table, address, fieldset {
-  margin-bottom: .5em;
+  margin-top: 1em;
 }
 
 dl dt {
-  font-size: 1em; /* = 12px */
+  font-size: 1em;
   color: #666;
   text-transform: uppercase;
+  margin-top: 1em;
 }
 
 dd {
-  font-size: 1em; /* = 12px */
+  font-size: 1em;
   font-style: normal;
+  margin-bottom: .5em;
 }
 
 dfn, cite, em, i {
@@ -215,6 +234,12 @@ footer.submitted {
   font-size: .834em; /* = 10px */
 }
 
+ol.lista-sin-marcadores,
+ul.lista-sin-marcadores { /* Hace que no aparezcan los marcadores de los elementos de las listas con esta clase */
+  list-style: none;
+  padding-left: 0;
+}
+
 /* ======================================================================
    Botones, áreas de texto, introducción de datos, etc.
    (Sobreescribe 'omega/omega/css/formalize.css')
@@ -298,12 +323,13 @@ textarea:active {
    Imágenes y clases específicas como item-list
    (Sobreescribe 'omega/alpha/css/alpha-alpha.css')
    ====================================================================== */
+
 img {
   max-width:100%;
 }
 
 .item-list ul li {
-	margin:0;
+  margin:0;
 }
 
 /* ######################################################################
@@ -331,7 +357,8 @@ img {
    Regiones 'Menu 1', 'Menu 2', 'Menu 3', 'Menu 4'
    ---------------------------------------------------------------------- */
 
-.reg-menu { /* Convierte el texto de los elementos y títulos de menú a minúsculas */
+.reg-menu,
+.reg-menu h2.block-title { /* Convierte el texto de los elementos y títulos de menú a minúsculas */
   text-transform: lowercase;
 }
 
@@ -351,7 +378,6 @@ img {
   color: #999;
 }
 
-.reg-menu a:active,
 .reg-menu .active-trail a {
   text-decoration: line-through;
 }
@@ -480,16 +506,18 @@ img.logos-redes-sociales {
   letter-spacing: normal;
   font-size: 4.417em; /* = 53px */
   font-weight: normal;
-  line-height: .9434; /* = 50px */
+  line-height: .905660; /* = 48px */
   padding-bottom: .0377em; /* = 2px */
   text-transform: uppercase;
   margin-bottom: 0;
 }
+
 .reg-header-top h1 a {
-	color:#000;
+  color:#000;
 }
+
 .reg-header-top h1 a:hover {
-	color:#999;
+  color:#999;
 }
 
 .reg-header-top h1 .mayuscula-acento { /* Cambia el texto a versalitas (para usarlo en las vocales con acento en los títulos grandes de los apartados) */
@@ -515,6 +543,7 @@ img.logos-redes-sociales {
 /* ======================================================================
    Zona 'Content'
    ====================================================================== */
+
 .zon-content {
   margin-top: .25em; /* = 3px */
 }
@@ -554,7 +583,6 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
   color: #999;
 }
 
-.reg-sidebar-first-submenu a:active,
 .reg-sidebar-first-submenu .active-trail a {
   text-decoration: line-through;
 }
@@ -574,7 +602,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
    ---------------------------------------------------------------------- */
 
 .reg-content h1#page-title {
-	text-transform:uppercase;
+  text-transform:uppercase;
 }
 
 
