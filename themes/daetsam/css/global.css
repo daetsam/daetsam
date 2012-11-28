@@ -602,7 +602,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
    Región 'Content'
    ---------------------------------------------------------------------- */
 
-.reg-content h1#page-title {
+.reg-content h1 {
   text-transform:uppercase;
 }
 
