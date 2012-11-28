@@ -553,6 +553,10 @@ img.logos-redes-sociales {
   margin-bottom: .5em; /* = 6px */
 }
 
+.zon-content h1 {
+  text-transform:uppercase;
+}
+
 .alpha { /* Permite que los elementos de una vista organizados en columnas de rejilla puedan colocarse ocupando todas las columnas (módulo Views Column Class) */
   clear: left;
 }
@@ -602,9 +606,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
    Región 'Content'
    ---------------------------------------------------------------------- */
 
-.reg-content h1 {
-  text-transform:uppercase;
-}
+
 
 
 /* ######################################################################
