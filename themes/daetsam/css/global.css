@@ -282,6 +282,7 @@ input[type="week"] {
   border-color: #333;
   font-family: 'News Cycle', Helvetica, Arial, sans-serif;
   font-size: 1em;
+  max-width:100%;
 }
 
 button:focus,
