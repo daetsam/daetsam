@@ -42,10 +42,12 @@ body .reg-menu h2.block-title { /* Ajusta la separaci—n entre los elementos del 
 .redes-sociales {
   margin-bottom: .5em; /* = 6px */
 }
+.redes-sociales a {
+  margin-left: 7px;
+}
 
 img.logos-redes-sociales {
   width: 17px;
-  margin-left: 7px;
 }
 
 .reg-search-bar input[type="text"] {

@@ -100,10 +100,11 @@ footer.submitted {
 .redes-sociales {
   margin-bottom: .538em; /* = 7px */
 }
-
+.redes-sociales a {
+  margin-left: 8px;
+}
 img.logos-redes-sociales {
   width: 20px;
-  margin-left: 10px;
 }
 
 .reg-search-bar input[type="text"] {

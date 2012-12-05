@@ -35,15 +35,16 @@
 .reg-search-bar {
   margin-top: 0;
   margin-bottom: 0;
+  text-align:right;
 }
 
 .redes-sociales {
-  float: right;
+  display:inline-block;
+  float:none;
   margin-right: 2px;
 }
 
 img.logos-redes-sociales {
-  float: right;
   margin-right: 0;
 }
 
