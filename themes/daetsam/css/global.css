@@ -588,6 +588,8 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
   list-style: none;
 }
 
+
+
 /* ----------------------------------------------------------------------
    Región 'Sidebar First'
    ---------------------------------------------------------------------- */
@@ -629,7 +631,13 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
    Región 'Content'
    ---------------------------------------------------------------------- */
 
-
+/* ----------------------------------------------------------------------
+   Región 'Content' - estilos específicos para págians concretas
+   ---------------------------------------------------------------------- */
+.imageSlider {
+  margin:10px 0;
+  height:150px;
+}
 
 
 /* ######################################################################
