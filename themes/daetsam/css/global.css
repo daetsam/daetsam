@@ -634,50 +634,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 /* ----------------------------------------------------------------------
    Región 'Content' - estilos específicos para págians concretas
    ---------------------------------------------------------------------- */
-/*
-
-	Texto pequeño
-
-*/
-.small-text {
-  font-size:0.9em;
-}
-.big-text {
-  font-size:1.6em;
-}
-
-/*
-
-	Estadísticas
-
-*/
-dl.statistics {
-  border-left:#000 2px solid;
-  padding:2px 0;
-  margin:0;
-}
-dl.statistics dt {
-  float:left;
-  background:#AAA;
-  padding:0px;
-  margin:2px 0;
-  height:20px;
-}
-dl.statistics dd {
-  padding:2px 2px;
-  margin:3px 0;
-  font-size:0.9em;
-  
-  height:22px;
-  
-  white-space:nowrap;
-  overflow:hidden;
-}
-dl.statistics dt.statistcs-highlight {
-  background:#000;
-}
-
-
+   
 /*
    Estilos para el plugin 'daetsam-slider'
    Muestra contenido como una galería de imágenes.
