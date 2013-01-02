@@ -630,7 +630,23 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 /* ----------------------------------------------------------------------
    Región 'Content'
    ---------------------------------------------------------------------- */
-
+@media all and (max-width:730px) {
+.reg-content .grid-1,
+.reg-content .grid-2,
+.reg-content .grid-3,
+.reg-content .grid-4,
+.reg-content .grid-5,
+.reg-content .grid-6,
+.reg-content .grid-7,
+.reg-content .grid-8,
+.reg-content .grid-9,
+.reg-content .grid-10,
+.reg-content .grid-11,
+.reg-content .grid-12 {
+  margin-left:0;
+  margin-right:0;
+}
+}
 /* ----------------------------------------------------------------------
    Región 'Content' - estilos específicos para págians concretas
    ---------------------------------------------------------------------- */
