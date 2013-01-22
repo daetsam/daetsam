@@ -27,8 +27,8 @@
 				var id = $(this).index();
 				
 				if (active!=id) {
-					contentList.find('li:eq(' + active + ')').hide('fade'); //'slide', {direction: 'left'}, '500');
-					contentList.find('li:eq(' + id + ')').show('fade'); //'slide', {direction: 'left'}, '500');
+					contentList.find('li:eq(' + active + ')').addClass('changing').hide('fade'); //'slide', {direction: 'left'}, '500');
+					contentList.find('li:eq(' + id + ')').show('fade').removeClass('changing'); //'slide', {direction: 'left'}, '500');
 					active = id;
 					
 					bulletList.find('li').removeClass('active-trail');
