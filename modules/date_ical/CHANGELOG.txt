@@ -1,15 +1,19 @@
 Date iCal 7.x
-=================
-
-===================
-Version 7.x-1.x-dev
 ===================
 
+===================
+Version 7.x-2.0
+===================
+- Issue #1721678, incorporate abandoned Parser iCal module's Feeds plugin, allowing Date iCal to parse iCal feeds.
 - Issue #1833362, convert to using the iCalcreator library, rather than the theme system, for formatting iCal data.
+- Many other issues, which were closed during the week of Jan 14, 2013. 
+
+===================
+Version 7.x-1.2
+===================
 - Issue #1793868, fix error when adding iCal view mode to non-standard entities.
 - Issue #1863448, Remove extraneous div around the feed icon.
-- Issue #1721678, incorporate abandoned Parser iCal module's Feeds plugin, allowing Date iCal to parse iCal feeds.
-
+- Many other issues, which were closed during the week of Jan 14, 2013. 
 
 ===================
 Version 7.x-1.1

@@ -149,6 +149,13 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
       $field_name = 'revision_timestamp';
     }
     
+    if (!isset($entity->$field_name)) {
+      // This entity doesn't have the date property that the user configured
+      // our view to use. We can't do anything with it
+      return;
+    }
+    $date_field = $entity->$field_name;
+    
     // Pull the date value from the specified field of the entity.
     $entity->date_id = array();
     $start = NULL;
@@ -158,8 +165,8 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
     if ($is_field) {
       $items = field_get_items($this->entity_type, $entity, $field_name);
       if (!$items) {
-        // This entity doesn't have the date field that the user configured our
-        // view to use. We can't do anything with it.
+        // This entity doesn't have data in the date field that the user
+        // configured our view to use. We can't do anything with it.
         return;
       }
       $date_field = $items[$delta];

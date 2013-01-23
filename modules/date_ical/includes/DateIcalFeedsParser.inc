@@ -29,9 +29,11 @@ abstract class DateIcalFeedsParser extends FeedsParser {
     // Want to have the sources as a property of the class,
     // but can't declare them with t().
     $sources = $this::$sources;
-    foreach ($sources as $key => &$value) {
-      if ($key == 'name' || $key == 'description') {
-        $value = t($value);
+    foreach ($sources as &$source) {
+      foreach ($source as $key => &$value) {
+        if ($key == 'name' || $key == 'description') {
+          $value = t($value);
+        }
       }
     }
     // Call parent::getMappingSources() to trigger additional target creation.
