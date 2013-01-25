@@ -814,12 +814,25 @@ dl.statistics dt.statistcs-highlight {
    Bloque vista 'asociaciones 2'
    ====================================================================== */
 #block-views-asociaciones-block-1 .item-list ul li,
-#block-views-asociaciones-block-2 .item-list ul li {
+#block-views-asociaciones-block-2 .item-list ul li,
+#block-views-last-news-block-1 .item-list ul li,
+#block-views-last-news-block-2 .item-list ul li,
+#block-views-last-news-block-3 .item-list ul li,
+#block-views-last-news-index-block-daetsam .item-list ul li,
+#block-views-last-news-index-block-enlaetsam .item-list ul li,
+#block-views-last-news-index-block-offetsam .item-list ul li {
 	margin-bottom:10px;
 	border-bottom:#000 3px solid;
 }
+
 #block-views-asociaciones-block-1 .item-list ul li h2,
-#block-views-asociaciones-block-2 .item-list ul li h2 {
+#block-views-asociaciones-block-2 .item-list ul li h2,
+#block-views-last-news-block-1 .item-list ul li h2, 
+#block-views-last-news-block-2 .item-list ul li h2, 
+#block-views-last-news-block-3 .item-list ul li h2, 
+#block-views-last-news-index-block-daetsam .item-list ul li h2, 
+#block-views-last-news-index-block-enlaetsam .item-list ul li h2, 
+#block-views-last-news-index-block-offetsam .item-list ul li h2,{
 	margin-top:0;
 }
 #block-views-asociaciones-block-1 .views-field-field-imagen,
