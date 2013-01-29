@@ -837,7 +837,7 @@ dl.statistics dt.statistcs-highlight {
 #block-views-last-news-block-3 .item-list ul li h2, 
 #block-views-last-news-index-block-daetsam .item-list ul li h2, 
 #block-views-last-news-index-block-enlaetsam .item-list ul li h2, 
-#block-views-last-news-index-block-offetsam .item-list ul li h2,{
+#block-views-last-news-index-block-offetsam .item-list ul li h2 {
 	margin-top:0;
 }
 #block-views-asociaciones-block-1 .views-field-field-imagen,
