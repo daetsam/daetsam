@@ -369,7 +369,12 @@ img {
 /* ----------------------------------------------------------------------
    Regiones 'Menu 1', 'Menu 2', 'Menu 3', 'Menu 4'
    ---------------------------------------------------------------------- */
-
+@media all and (min-width: 740px) and (min-device-width: 740px) {
+.reg-menu-salto-linea h2.block-title { /* Fuerza el salto de línea en títulos de menú largos */
+  width: 60%;
+  margin-left: 40%;
+}
+}
 .reg-menu,
 .reg-menu h2.block-title { /* Convierte el texto de los elementos y títulos de menú a minúsculas */
   text-transform: lowercase;
@@ -431,7 +436,7 @@ body .reg-menu h2.block-title { /* Ajusta la separación entre los elementos de 
 }
 
 .redes-sociales a {
-  margin-left:9px;
+  margin-left:5px;
 }
 
 img.logos-redes-sociales {
