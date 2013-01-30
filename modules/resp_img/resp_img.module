@@ -227,7 +227,7 @@ function resp_img_field_attach_view_alter(&$output, $context) {
           $group_name = substr($settings[$vars['image_style']], strlen(RESP_IMG_STYLE_PREFIX));
           if ($mappings = resp_img_mapping_load('mappings.' . $group_name)) {
             foreach ($mappings as $breakpoint_name => $multipliers) {
-              if (!empty($multipliers)) {
+              if (!empty($multipliers) && is_array($multipliers)) {
                 foreach ($multipliers as $multiplier => $image_style) {
                   if (!empty($image_style)) {
                     if (empty($first_image_style)) {
@@ -242,23 +242,22 @@ function resp_img_field_attach_view_alter(&$output, $context) {
               }
             }
           }
-        }
-
-        if (!empty($breakpoint_styles)) {
-          // Change the formatter so it uses ours.
-          $element['#formatter'] = $vars['#formatter'];
-
-          // Change the formatter on all items as well.
-          $num_fields = count($element['#items']);
-          for ($delta = 0; $delta < $num_fields; $delta++) {
-            $element[$delta]['#theme'] = $vars['#theme'];
-            // Change the image style to the first in use.
-            $element[$delta]['#image_style'] = $first_image_style;
-            $element[$delta]['#breakpoints'] = $breakpoint_styles;
+          if (!empty($breakpoint_styles)) {
+            // Change the formatter so it uses ours.
+            $element['#formatter'] = $vars['#formatter'];
+  
+            // Change the formatter on all items as well.
+            $num_fields = count($element['#items']);
+            for ($delta = 0; $delta < $num_fields; $delta++) {
+              $element[$delta]['#theme'] = $vars['#theme'];
+              // Change the image style to the first in use.
+              $element[$delta]['#image_style'] = $first_image_style;
+              $element[$delta]['#breakpoints'] = $breakpoint_styles;
+            }
           }
-        }
-        else {
-          watchdog('Responsive images', t('You have to map at least 1 style for %group.', array('%group' => $group_name)));
+          else {
+            watchdog('Responsive images', t('You have to map at least 1 style for %group.', array('%group' => $group_name)));
+          }
         }
       }
     }
