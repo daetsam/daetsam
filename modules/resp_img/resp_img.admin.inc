@@ -2,114 +2,72 @@
 
 /**
  * @file
- * Responsive images and styles - map breakpoints and image styles
+ * Admin settings
  */
 
-/**
- * Admin form
- */
-function resp_img_admin_breakpoints($form, &$form_state, $breakpoint_group_name = '') {
-  // Show a list of all groups if no group name is given.
-  if ($breakpoint_group_name == '' || $breakpoint_group_name == 'global') {
-    return resp_img_admin_breakpoints_overview_page();
-  }
-  $machine_name = 'mappings.' . $breakpoint_group_name;
+function resp_img_admin_settings() {
   $form = array();
 
-  $mappings = resp_img_mapping_load($machine_name);
-  $mappings = $mappings ? $mappings : new stdclass();
-
-  $form['resp_img_mapping'] = array(
-    '#type' => 'container',
-    '#tree' => TRUE,
-  );
-  $form['resp_img_mapping']['machine_name'] = array(
-    '#type' => 'value',
-    '#value' => isset($mappings->machine_name) ? $mappings->machine_name : $machine_name,
-  );
-  $form['resp_img_mapping']['breakpoint_group'] = array(
-    '#type' => 'value',
-    '#value' => isset($mappings->breakpoint_group) ? $mappings->breakpoint_group : $breakpoint_group_name,
-  );
-  if (isset($mappings->id)) {
-    $form['resp_img_mapping']['id'] = array(
-      '#type' => 'value',
-      '#value' => $mappings->id,
-    );
-  }
-
-  $breakpoints = array();
-  $breakpoint_group = breakpoints_breakpoint_group_load($breakpoint_group_name);
-  $weight = 0;
-  foreach ($breakpoint_group->breakpoints as $breakpoint_name) {
-    $breakpoint = breakpoints_breakpoint_load_by_fullkey($breakpoint_name);
-    if ($breakpoint && isset($breakpoint->machine_name) && $breakpoint->status) {
-      $breakpoint->global_weight = $breakpoint->weight;
-      $breakpoint->weight = $weight++;
-      $breakpoints[$breakpoint_name] = $breakpoint;
-    }
-  }
-
-  $image_styles = image_style_options(TRUE);
-  foreach ($breakpoints as $breakpoint_name => $breakpoint) {
-    $label = '1x ' . $breakpoint->name . ' [' . $breakpoint->breakpoint . ']';
-    $form['resp_img_mapping']['mapping'][$breakpoint_name]['1x'] = array(
-      '#title' => check_plain($label),
-      '#type' => 'select',
-      '#options' => $image_styles,
-      '#default_value' => isset($mappings->mapping[$breakpoint_name]['1x']) ? $mappings->mapping[$breakpoint_name]['1x'] : '',
-    );
-    if (isset($breakpoint->multipliers) && !empty($breakpoint->multipliers)) {
-      foreach ($breakpoint->multipliers as $multiplier => $status) {
-        if ($status) {
-          $label = $multiplier . ' ' . $breakpoint->name . ' [' . $breakpoint->breakpoint . ']';
-          $form['resp_img_mapping']['mapping'][$breakpoint_name][$multiplier] = array(
-            '#title' => check_plain($label),
-            '#type' => 'select',
-            '#options' => $image_styles,
-            '#default_value' => isset($mappings->mapping[$breakpoint_name][$multiplier]) ? $mappings->mapping[$breakpoint_name][$multiplier] : '',
-          );
-        }
-      }
-    }
-  }
-
-  // Buttons
-  $form['buttons'] = array(
-    '#type' => 'container',
+  $form['resp_img_default_suffix'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default suffix'),
+    '#description' => t('Specify the default suffix to use, ex. "_mobile". Make sure you also create the corresponding imagestyles.'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('resp_img_default_suffix', ''),
+    '#size' => 20,
   );
 
-  // Submit button
-  $form['buttons']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save'),
+  $form['resp_img_forceredirect'] = array(
+    '#type' => 'select',
+    '#title' => t('Force redirect'),
+    '#description' => t('Force redirect if cookie is not set.'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('resp_img_forceredirect', FALSE),
+    '#options' => array(0 => t('No'), 1 => ('Yes'),),
   );
 
-  return $form;
-}
-
-/**
- * Admin form overview page.
- */
-function resp_img_admin_breakpoints_overview_page() {
-  $links = array();
-  $breakpoint_groups = breakpoints_breakpoint_group_load_all();
-  foreach ($breakpoint_groups as $breakpoint_group) {
-    $links[] = l($breakpoint_group->name, 'admin/config/media/resp_img/groups/' . $breakpoint_group->machine_name);
-  }
-  return array(
-    '#type' => 'container',
-    '#theme' => 'item_list',
-    '#items' => $links,
+  $form['resp_img_forceresize'] = array(
+    '#type' => 'select',
+    '#title' => t('Force resize'),
+    '#description' => t('Resize images when browser windows resizes.'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('resp_img_forceresize', FALSE),
+    '#options' => array(0 => t('No'), 1 => ('Yes'),),
   );
-}
 
-/**
- * Admin form submit.
- */
-function resp_img_admin_breakpoints_submit($form, &$form_state) {
-  $mapping = (object)$form_state['values']['resp_img_mapping'];
-  resp_img_mapping_save($mapping);
+  $form['resp_img_reloadonresize'] = array(
+    '#type' => 'select',
+    '#title' => t('Reload on resize'),
+    '#description' => t('Reload the page when browser windows resizes, use wisely!'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('resp_img_reloadonresize', FALSE),
+    '#options' => array(0 => t('No'), 1 => ('Yes'),),
+  );
+
+  $form['resp_img_purgeexpire'] = array(
+    '#type' => 'select',
+    '#title' => t('Advanced support for purge/expire'),
+    '#description' => t('Clear all variants using purge/expire modules.'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('resp_img_purgeexpire', FALSE),
+    '#options' => array(0 => t('No'), 1 => ('Yes'),),
+  );
+
+  $form['resp_img_block_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable responsive images for blocks.'),
+    '#description' => t('If checked, the images within blocks will be responsive as well.'),
+    '#default_value' => variable_get('resp_img_block_enabled', 1),
+  );
+
+  $form['resp_img_use_device_pixel_ratio'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use device pixel ratio'),
+    '#description' => t('Take the device pixel ratio in to account when calculating the right suffix. !link', array('!link' => l('Click here for more information.', 'http://drupal.org/node/1550054'))),
+    '#default_value' => variable_get('resp_img_use_device_pixel_ratio', FALSE),
+  );
+
+  return system_settings_form($form);
 }
 
 function resp_img_add_style_form($form, &$form_state) {
@@ -130,17 +88,18 @@ function resp_img_add_style_form($form, &$form_state) {
     '#element_validate' => array('image_style_name_validate'),
     '#required' => TRUE,
   );
-  $breakpoints = breakpoints_breakpoint_load_all_active();
+  $suffixes = resp_img_suffix_load_all();
   $options = array();
-  foreach ($breakpoints as $breakpoint) {
-    $options[$breakpoint->breakpoint] = $breakpoint->name . ' (' . $breakpoint->breakpoint . ')';
+  $options[variable_get('resp_img_default_suffix', '')] = t('Default') . ' (' . variable_get('resp_img_default_suffix', '') . ')';
+  foreach ($suffixes as $suffix) {
+    $options[$suffix->suffix] = $suffix->label . ' (' . $suffix->suffix . ')';
   }
-  $form['breakpoints'] = array(
-    '#title' => t('breakpoints'),
+  $form['suffixes'] = array(
+    '#title' => t('Suffixes'),
     '#type' => 'checkboxes',
     '#options' => $options,
     '#default_value' => drupal_map_assoc(array_keys($options)),
-    '#description' => t('Select the breakpoints to create an image style for'),
+    '#description' => t('Select the suffixes to create an image style for'),
     '#required' => TRUE,
   );
 
@@ -152,9 +111,9 @@ function resp_img_add_style_form($form, &$form_state) {
 }
 
 function resp_img_add_style_form_validate($form, &$form_state) {
-  foreach (array_filter($form_state['values']['breakpoints']) as $breakpoint) {
-    if (image_style_load($form_state['values']['base_name'] . $breakpoint)) {
-      form_set_error('breakpoints', t('An image style with the name !name already exists', array('!name' => $form_state['values']['base_name'] . $breakpoint)));
+  foreach (array_filter($form_state['values']['suffixes']) as $suffix) {
+    if (image_style_load($form_state['values']['base_name'] . $suffix)) {
+      form_set_error('suffixes', t('An image style with the name !name already exists', array('!name' => $form_state['values']['base_name'] . $suffix)));
     }
   }
 }
@@ -164,84 +123,20 @@ function resp_img_add_style_form_submit($form, &$form_state) {
   if (!isset($base['effects'])) {
     $base['effects'] = array();
   }
-  foreach (array_filter($form_state['values']['breakpoints']) as $breakpoint) {
+  foreach ($base['effects'] as &$effect) {
+    unset($effect['isid']);
+    unset($effect['ieid']);
+  }
+  $base['effects'] = array_values($base['effects']);
+  foreach (array_filter($form_state['values']['suffixes']) as $suffix) {
     $new_style = array(
-      'name' => $form_state['values']['base_name'] . $breakpoint,
+      'name' => $form_state['values']['base_name'] . $suffix,
+      'module' => 'resp_img',
+      'storage' => IMAGE_STORAGE_NORMAL,
       'effects' => $base['effects'],
     );
-    image_style_save($new_style);
+    image_default_style_save($new_style);
   }
   $form_state['redirect'] = 'admin/config/media/image-styles';
   drupal_set_message(t('The new styles have been created'));
-}
-
-function resp_img_admin_export_form($form, &$form_state, $mappings_name) {
-  // Create the export code textarea.
-  ctools_include('export');
-  $mapping = resp_img_mapping_load($mappings_name);
-  if (!$mapping) {
-    $mapping = new stdclass();
-  }
-  $export = ctools_export_object('resp_img_mapping', $mapping);
-  $form['mapping_export'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Mapping code'),
-    '#rows' => count(explode("\n", $export)),
-    '#default_value' => $export,
-    '#weight' => -1,
-    '#description' => t('<strong>Warning!</strong> Only import these mappings if the breakpoint group below has been imported on that site already, or if they were manually created there.'),
-  );
-
-  // Also export the group it belongs to.
-  module_load_include('inc', 'breakpoints', 'breakpoints.admin');
-  $form += drupal_get_form('breakpoints_admin_breakpoint_group_export_form', $mapping->breakpoint_group);
-  $form['export']['#description'] = t('If you want to import this mapping on an other site,
-    you\'ll need to import the breakpoint group with its breakpoints as well,
-    if it doesn\'t already exist on that site.');
-  return $form;
-}
-
-function resp_img_admin_import_form($form, &$form_state) {
-  $form['import'] = array(
-    '#type' => 'textarea',
-    '#rows' => 10,
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Import')
-  );
-  return $form;
-}
-
-
-/**
- * Validate a mapping import.
- */
-function resp_img_admin_import_form_validate($form, &$form_state) {
-  ctools_include('export');
-  $code = $form_state['values']['import'];
-  $mapping = ctools_export_crud_import('resp_img_mapping', $code);
-  if (!resp_img_mapping_validate($mapping)) {
-    form_set_error('import', t('Not a valid mapping object'));
-    return;
-  }
-  if (resp_img_mapping_load($mapping->machine_name)) {
-    form_set_error('import', t('A mapping with machine name %name already exists', array('%name' => $mapping->machine_name)));
-    return;
-  }
-  form_set_value($form['import'], $mapping, $form_state);
-}
-
-/**
- * Import mapping.
- */
-function resp_img_admin_import_form_submit($form, &$form_state) {
-  $mapping = $form_state['values']['import'];
-  if (resp_img_mapping_save($mapping)) {
-    drupal_set_message(t('Mapping %mapping saved.', array('%mapping' => $mapping->machine_name)));
-    $form_state['redirect'] = 'admin/config/media/resp_img/';
-  }
-  else {
-    drupal_set_message(t('Something went wrong, we could not save the mapping'), 'error');
-  }
 }
