@@ -1,60 +1,20 @@
 <?php
 
-/**
- * @file resp_img.module
- */
-if (!defined('RESP_IMG_COOKIE')) {
-  define('RESP_IMG_COOKIE', 'respimg');
-  define('RESP_IMG_RATIO_COOKIE', 'respimg_ratio');
-}
+define('RESP_IMG_CLASS', 'resp-img-picture');
+define('RESP_IMG_SEPARATOR', '__');
+define('RESP_IMG_STYLE_PREFIX', 'resp__img__');
 
 /**
- * Implements hook_ctools_plugin_directory()
+ * Implements hook_permission().
  */
-function resp_img_ctools_plugin_directory($module, $plugin) {
-  if ($module == 'ctools' && $plugin == 'export_ui') {
-    return 'plugins/' . $plugin;
-  }
+function resp_img_permission() {
+  return array(
+    'administer responsive images and styles' => array(
+      'title' => t('Administer Responsive Images and Styles'),
+      'description' => t('Administer responsive images and styles'),
+    ),
+  );
 }
-
-/**
- * Implements hook_init().
- */
-function resp_img_init() {
-  resp_img_add_js();
-  if (module_exists('context')) {
-    $plugin = context_get_plugin('condition', 'resp_img_context_condition_suffix');
-    if ($plugin) {
-      $plugin->execute(resp_img_get_best_suffix());
-    }
-  }
-}
-
-/**
- * Implements hook_enable().
- */
-function resp_img_enable() {
-  $cache_class_cache_page = variable_get('cache_class_cache_page');
-  if (!empty($cache_class_cache_page)) {
-    variable_set('resp_img_cache_class_cache_page_old', $cache_class_cache_page);
-  }
-  variable_set('cache_class_cache_page', 'RespImgPageCache');
-}
-
-/**
- * Implements hook_disable().
- */
-function resp_img_disable() {
-  $cache_class_cache_page_old = variable_get('resp_img_cache_class_cache_page_old');
-  if (isset($cache_class_cache_page_old)) {
-    variable_set('cache_class_cache_page', $cache_class_cache_page_old);
-  }
-  else {
-    variable_del('cache_class_cache_page');
-  }
-  variable_del('resp_img_cache_class_cache_page_old');
-}
-
 
 /**
  * Implements hook_menu().
@@ -62,14 +22,15 @@ function resp_img_disable() {
 function resp_img_menu() {
   $items = array();
 
-  $items['admin/config/media/resp_img/settings'] = array(
-    'title' => 'Settings',
-    'description' => 'Responsive images and styles',
+  // @todo: link to all breakpoints and a list of all groups
+  // cf theme settings page
+  $items['admin/config/media/resp_img'] = array(
+    'title' => 'Responsive images and styles',
+    'description' => 'Manage Responsive Images and Styles',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('resp_img_admin_settings'),
-    'access arguments' => array('administer image styles'),
+    'page arguments' => array('resp_img_admin_breakpoints'),
+    'access arguments' => array('administer responsive images and styles'),
     'file' => 'resp_img.admin.inc',
-    'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/media/resp_img/create_style'] = array(
@@ -77,381 +38,541 @@ function resp_img_menu() {
     'description' => 'Add a responsive image style',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('resp_img_add_style_form'),
-    'access arguments' => array('administer image styles'),
+    'access arguments' => array('administer responsive images and styles'),
     'file' => 'resp_img.admin.inc',
     'type' => MENU_LOCAL_TASK,
+    'weight' => 30,
   );
+
+  $items['admin/config/media/resp_img/groups'] = array(
+    'title' => 'Groups',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 10,
+  );
+
+  $items['admin/config/media/resp_img/groups/global'] = array(
+    'title' => 'Map breakpoints and image styles',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -1,
+  );
+  $items['admin/config/media/resp_img/groups/import'] = array(
+    'title' => 'Import mappings',
+    'page arguments' => array('resp_img_admin_import_form'),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('administer responsive images and styles'),
+    'file' => 'resp_img.admin.inc',
+    'weight' => 999,
+  );
+
+  $breakpoint_groups = breakpoints_breakpoint_group_load_all();
+  foreach ($breakpoint_groups as $breakpoint_group_name => $breakpoint_group) {
+    if (!empty($breakpoint_group->machine_name)) {
+      $items['admin/config/media/resp_img/groups/' . $breakpoint_group->machine_name] = array(
+        'title' => $breakpoint_group->name,
+        'page arguments' => array('resp_img_admin_breakpoints', $breakpoint_group->machine_name),
+        'type' => MENU_LOCAL_TASK,
+        'access arguments' => array('administer responsive images and styles'),
+        'file' => 'resp_img.admin.inc',
+        'weight' => 15,
+      );
+      $items['admin/config/media/resp_img/groups/' . $breakpoint_group->machine_name . '/export'] = array(
+        'title' => t('Export !name mappings', array('!name' => $breakpoint_group->name)),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('resp_img_admin_export_form', 'mappings.' . $breakpoint_group->machine_name),
+        'type' => MENU_LOCAL_ACTION,
+        'access arguments' => array('administer responsive images and styles','mappings.' . $breakpoint_group->machine_name),
+        'access callback' => 'resp_img_mappings_export_access',
+        'file' => 'resp_img.admin.inc',
+        'weight' => 15,
+      );
+    }
+  }
 
   return $items;
 }
 
 /**
-* Load a single suffix
-*/
-function resp_img_suffix_load($name) {
+ * Access callback.
+ */
+function resp_img_mappings_export_access($perm, $mapping_name) {
+  return resp_img_mapping_load($mapping_name) && user_access($perm);
+}
+
+/**
+ * Load mappings.
+ */
+function resp_img_mapping_load($name = NULL) {
   ctools_include('export');
-  $result = ctools_export_load_object('resp_img_suffix', 'names', array($name));
-  if (isset($result[$name])) {
-    return $result[$name];
+  if ($name) {
+    $mappings = ctools_export_load_object('resp_img_mapping', 'names', array($name));
+    $mapping = isset($mappings[$name]) ? $mappings[$name] : FALSE;
+    return $mapping;
   }
+  return ctools_export_load_object('resp_img_mapping');
 }
 
+
 /**
- * Load all suffixes
+ * Save mappings.
  */
-function resp_img_suffix_load_all() {
+function resp_img_mapping_save(&$mapping) {
   ctools_include('export');
-  return ctools_export_load_object('resp_img_suffix');
+  $update = isset($mapping->id) ? array('id') : array();
+  return drupal_write_record('resp_img_mapping', $mapping, $update);
 }
 
 /**
-* Save a single suffix
-*/
-function resp_img_suffix_save(&$resp_img_suffix) {
-  $update = (isset($resp_img_suffix->id) && is_numeric($resp_img_suffix->id)) ? array('id') : array();
-  return drupal_write_record('resp_img_suffix', $resp_img_suffix, $update);
-}
-
-/**
- * Load suffix and breakpoint for all suffixes
+ * Validate mappings.
  */
-function resp_img_suffix_load_all_breakpoints() {
-  static $widths = array();
-  if (empty($widths)) {
-    $suffixes = resp_img_suffix_load_all();
-    foreach ($suffixes as $suffix) {
-      $widths[$suffix->suffix] = (int)$suffix->breakpoint;
+function resp_img_mapping_validate($mapping) {
+  if (!is_object($mapping)) {
+    return FALSE;
+  }
+  foreach (array('machine_name', 'breakpoint_group', 'mapping') as $property) {
+    if (!property_exists($mapping, $property)) {
+      return FALSE;
     }
-    $widths[variable_get('resp_img_default_suffix', '')] = 1;
-    arsort($widths);
   }
-  return $widths;
+  return TRUE;
 }
 
 /**
- * Add cookie support, script and settings
+ * Add javascript for older browser support
  */
 function resp_img_add_js() {
   static $added = FALSE;
   if (!$added) {
     $added = TRUE;
-    $settings = array();
-    $settings['default_suffix'] = variable_get('resp_img_default_suffix', '');
-    $settings['current_suffix'] = resp_img_get_best_suffix();
-    $settings['forceRedirect'] = variable_get('resp_img_forceredirect', FALSE);
-    $settings['forceResize'] = variable_get('resp_img_forceresize', FALSE);
-    $settings['reloadOnResize'] = variable_get('resp_img_reloadonresize', FALSE);
-    $settings['useDevicePixelRatio'] = variable_get('resp_img_use_device_pixel_ratio', FALSE);
-    
-    $settings['suffixes'] = resp_img_suffix_load_all_breakpoints();
-    drupal_add_library('system', 'jquery.cookie');
-    drupal_add_js(array('respImg' => $settings), array('type' => 'setting', 'weight' => -11, 'group' => JS_DEFAULT));
-    drupal_add_js(drupal_get_path('module', 'resp_img') . '/resp_img.js', array('type' => 'file', 'weight' => -10, 'group' => JS_DEFAULT));
+    drupal_add_js(drupal_get_path('module', 'resp_img') . '/picturefill/matchmedia.js', array('type' => 'file', 'weight' => -10, 'group' => JS_DEFAULT));
+    drupal_add_js(drupal_get_path('module', 'resp_img') . '/picturefill/picturefill.js', array('type' => 'file', 'weight' => -10, 'group' => JS_DEFAULT));
   }
 }
 
 /**
- * Replace suffix if needed / possible
+ * Implements hook_theme().
  */
-function resp_img_replace_suffix($path) {
-  $bestfit_suffix = resp_img_get_best_suffix();
-  $default_suffix = variable_get('resp_img_default_suffix', '');
-
-  if (isset($bestfit_suffix) && !empty($bestfit_suffix) && $bestfit_suffix != $default_suffix) {
-    $path = str_replace($default_suffix, $bestfit_suffix, $path);
-  }
-  return $path;
-}
-
-/**
- * Determine best match
- */
-function resp_img_get_best_suffix() {
-  static $bestfit = FALSE;
-  if ($bestfit === FALSE && isset($_COOKIE[RESP_IMG_COOKIE]) && is_numeric($_COOKIE[RESP_IMG_COOKIE])) {
-    $width = $_COOKIE[RESP_IMG_COOKIE];
-    $ratio = _resp_img_get_device_pixel_ratio();
-    $width = $width * $ratio;
-    $bestfit = variable_get('resp_img_default_suffix', '');
-    $widths = resp_img_suffix_load_all_breakpoints();
-    foreach ($widths as $k => $v) {
-      if ($width >= $v) {
-        $bestfit = $k;
-        break;
-      }
-    }
-  }
-  return $bestfit;
-}
-
-function _resp_img_get_device_pixel_ratio() {
-  static $ratio = FALSE;
-  if (
-    $ratio === FALSE
-    && variable_get('resp_img_use_device_pixel_ratio', FALSE)
-    && isset($_COOKIE[RESP_IMG_RATIO_COOKIE])
-    && is_numeric($_COOKIE[RESP_IMG_RATIO_COOKIE])
-    )
-  {
-    $ratio = $_COOKIE[RESP_IMG_RATIO_COOKIE];
-  }
-  else {
-    $ratio = 1;
-  }
-  return $ratio;
-}
-
-/**
- * Implements hook_theme_registry_alter().
- */
-function resp_img_theme_registry_alter(&$theme_registry) {
-  foreach ($theme_registry as $key => $info) {
-    if ($key == 'image') {
-      if (isset($theme_registry[$key]['preprocess functions']) && is_array($theme_registry[$key]['preprocess functions'])) {
-        array_unshift($theme_registry[$key]['preprocess functions'], 'resp_img_pp_image');
-      } else {
-        $theme_registry[$key]['preprocess functions'] = array('resp_img_pp_image');
-      }
-    }
-    if ($key == 'field_slideshow') {
-      if (isset($theme_registry[$key]['preprocess functions']) && is_array($theme_registry[$key]['preprocess functions'])) {
-        array_unshift($theme_registry[$key]['preprocess functions'], 'resp_img_pp_field_slideshow');
-      } else {
-        $theme_registry[$key]['preprocess functions'] = array('resp_img_pp_field_slideshow');
-      }
-    }
-  }
-}
-
-/**
- * Support for field_slideshow.
- */
-function resp_img_pp_field_slideshow(&$variables) {
-  resp_img_add_js();
-  
-  if (isset($variables['image_style'])) {
-    $variables['image_style'] = resp_img_replace_suffix($variables['image_style']);
-  }
-  if (isset($variables['items']) && is_array($variables['items'])) {
-    foreach ($variables['items'] as $key => $item) {
-      if (isset($variables['items'][$key]['path']['path'])) {
-        $variables['items'][$key]['path']['path'] = resp_img_replace_suffix($variables['items'][$key]['path']['path']);
-      }
-    }
-  }
-}
-
-/**
- * Support for general images.
- */
-function resp_img_pp_image(&$variables) {
-  resp_img_add_js();
-  if (isset($variables['style_name']) && $variables['style_name'] != resp_img_replace_suffix($variables['style_name'])) {
-    $variables['style_name'] = resp_img_replace_suffix($variables['style_name']);
-    $variables['path'] = resp_img_replace_suffix($variables['path']);
-    foreach (array('width', 'height') as $key) {
-      if (isset($variables[$key])) {
-        unset($variables[$key]);
-      }
-    }
-  }
-}
-
-/**
- * Alter all links for things like colorbox.
- */
-function resp_img_url_outbound_alter(&$path, &$options, $original_path) {
-  if (!preg_match('|^/?admin/|',$path)) {
-    $path = resp_img_replace_suffix($path);
-  }
-}
-
-/**
- * Alter all image sources.
- */
-function resp_img_file_url_alter(&$uri) {
-  $uri = resp_img_replace_suffix($uri);
-}
-
-/**
- * Support for purge/expire module.
- * Specific for nginx / barracuda
- * Clears the cache for anonymous users and for the current user
- * Required changes to nginx config files
- * nginx_speed_purge.conf
- *   change fastcgi_cache_purge speed $1$host$request_method$2$is_args$args;
- *   to     fastcgi_cache_purge speed $1$host$2;
- * nginx_advanced_include.conf
- *   change fastcgi_cache_key "$device$host$key_uri$cookie_OctopusCacheID";
- *   to     fastcgi_cache_key "$device$host$key_uri$cookie_OctopusCacheID$cookie_respimg";
- */
-function resp_img_expire_cache_alter (&$expire, $node, &$paths) {
-  if (variable_get('resp_img_purgeexpire', FALSE)) {
-    if (!is_array($expire)) {
-      return;
-    }
-
-    // make array unique
-    $expire = array_unique($expire);
-
-    // add a copy of each path for each defined suffix (using width)
-    $extra_paths = array();
-    $widths = resp_img_suffix_load_all_breakpoints();
-    foreach ($widths as $k => $v) {
-      foreach ($expire as $path) {
-        $extra_paths[] = $path . $v;
-        // if Cache cookie is set add a copy of each path for the current user
-        if (isset($_COOKIE['OctopusCacheID'])) {
-          $extra_paths[] = $path . $_COOKIE['OctopusCacheID'] . $v;
-        }
-      }
-    }
-    $expire = array_merge($expire, $extra_paths);
-  }
-}
-
-/**
- * Implements hook_form_alter().
- */
-function resp_img_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'field_ui_field_edit_form') {
-    if ($form['#instance']['widget']['module'] == 'text') {
-      $form['resp_img'] = array(
-        '#title' => t('Responsive images and styles'),
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-      );
-
-      $form['resp_img']['use_for_resp_img'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Apply responsive images and styles to this field'),
-        //variable_get('resp_img_*entitytype*_*bundle*_*fieldname*, 0)
-        '#default_value' => variable_get('resp_img_' . $form['instance']['entity_type']['#value'] . '_' . $form['instance']['bundle']['#value'] . '_' . $form['instance']['field_name']['#value'], 0),
-        '#description' => t('If selected, responsive images and styles will be applied to the content of this field.'),
-      );
-
-      $form['#submit'][] = 'resp_img_add_entity_type_field';
-    }
-
-  }
-}
-
-function resp_img_add_entity_type_field($form, &$form_state) {
-  variable_set('resp_img_' . $form['instance']['entity_type']['#value'] . '_' . $form['instance']['bundle']['#value'] . '_' . $form['instance']['field_name']['#value'],  $form_state['values']['use_for_resp_img']);
-}
-
-/**
- * Implements hook_entity_view_alter().
- */
-function resp_img_entity_view_alter(&$build, $type) {
-  foreach (element_children($build) as $child) {
-    if (isset($build[$child]['#field_name'])) {
-      if (variable_get('resp_img_' . $build['#entity_type'] . '_' . $build['#bundle'] . '_' . $build[$child]['#field_name'], 0)) {
-        $build[$child]['#post_render'][] = 'resp_img_post_render';
-      }
-    }
-  }
-}
-
-function resp_img_post_render($content, $element) {
-  return _resp_img_replace($content);
-}
-
-function _resp_img_replace($content) {
-  $result = array();
-  preg_match_all('/<img[^>]+>/i', $content, $result);
-  $orig_imgs = $imgs = $result[0];
-  $sfx = resp_img_suffix_load_all();
-  $suffixes = array();
-  foreach ($sfx as $suffix) {
-    $suffixes[] = $suffix->suffix;
-  }
-  // media caches its file urls, so we need to replace all suffixes to the default suffix,
-  // before finding the best fitting suffix with resp_img_replace_suffix.
-  $imgs = str_replace($suffixes, variable_get('resp_img_default_suffix', ''), $imgs);
-  $new_imgs = preg_replace('/(height|width)=("[^"]*")/i', "", $imgs);
-  foreach ($new_imgs as &$img) {
-    $src = array();
-    preg_match('/src=("[^"]*")/i', $img, $src);
-    $src = $src[1];
-    $new_src = resp_img_replace_suffix($src);
-    $img = str_replace($src, $new_src, $img);
-  }
-  $content = str_replace($orig_imgs, $new_imgs, $content);
-  return $content;
-}
-
-/**
- * Implements hook_ctools_plugin_api().
- */
-function resp_img_ctools_plugin_api($owner, $api) {
-  return array('version' => 1);
-}
-
-/**
- * Implements hook_context_plugins().
- */
-function resp_img_context_plugins() {
-  $plugins = array();
-  $plugins['resp_img_context_condition_suffix'] = array(
-    'handler' => array(
-      'path' => drupal_get_path('module', 'resp_img') .'/plugins',
-      'file' => 'resp_img_context_condition_suffix.inc',
-      'class' => 'resp_img_context_condition_suffix',
-      'parent' => 'context_condition',
-    ),
-  );
-  return $plugins;
-}
-
-/**
- * Implements hook_context_registry().
- */
-function resp_img_context_registry() {
+function resp_img_theme() {
   return array(
-    'conditions' => array(
-      'resp_img_context_condition_suffix' => array(
-        'title' => t('Responsive Images'),
-        'plugin' => 'resp_img_context_condition_suffix',
+    'picture' => array(
+      'variables' => array(
+        'style_name' => NULL,
+        'path' => NULL,
+        'width' => NULL,
+        'height' => NULL,
+        'alt' => '',
+        'title' => NULL,
+        'attributes' => array(),
+        'breakpoints' => array(),
+      ),
+    ),
+    'picture_formatter' => array(
+      'variables' => array(
+        'item' => NULL,
+        'path' => NULL,
+        'image_style' => NULL,
+        'breakpoints' => array(),
+      ),
+    ),
+    'colorbox_picture_formatter' => array(
+      'variables' => array(
+        'item' => NULL,
+        'node' => NULL,
+        'field' => array(),
+        'display_settings' => array(),
+        'breakpoints' => array(),
+      ),
+    ),
+    'colorbox_picturefield' => array(
+      'variables' => array(
+        'image' => array(),
+        'path' => NULL,
+        'title' => NULL,
+        'gid' => NULL,
+        'breakpoints' => array(),
       ),
     ),
   );
 }
 
 /**
- * Implements hook_entity_info_alter().
+ * Implements hook_preprocess_field().
  */
-function resp_img_entity_info_alter(&$entity_info) {
-  // Support the media module
-  $entity_info['file']['view modes']['media_responsive'] = array('label' => t('Responsive'), 'custom settings' => TRUE);
-}
+function resp_img_field_attach_view_alter(&$output, $context) {
+  foreach (element_children($output) as $field_name) {
+    $element = &$output[$field_name];
+    $vars = array();
+    if (isset($element['#formatter'])) {
+      if ($element['#formatter'] == 'image') {
+        $vars['image_style'] = 'image_style';
+        $vars['#formatter'] = 'picture';
+        $vars['#theme'] = 'picture_formatter';
+      }
+      elseif ($element['#formatter'] == 'colorbox') {
+        $vars['image_style'] = 'colorbox_node_style';
+        $vars['#formatter'] = 'picture';
+        $vars['#theme'] = 'colorbox_picture_formatter';
+      }
 
-/**
- * Implements hook_block_view_alter().
- */
-function resp_img_block_view_alter(&$data, $block) {
-  if (variable_get('resp_img_block_enabled', 1) && isset($data['content'])) {
-    if (is_string($data['content'])) {
-      $data['content'] = _resp_img_replace($data['content']);
-    }
-    else {
-      $data['content']['#post_render'][] = 'resp_img_post_render';
-    }
-  }
-}
+      if (!empty($vars)) {
+        $instance = field_info_instance($element['#entity_type'], $element['#field_name'], $element['#bundle']);
+        if (isset($instance['display'][$context['view_mode']])) {
+          $settings = $instance['display'][$context['view_mode']]['settings'];
+        }
+        else {
+          $settings = $instance['display']['default']['settings'];
+        }
+        $breakpoint_styles = array();
+        $first_image_style = '';
+        if (strpos($settings[$vars['image_style']], RESP_IMG_STYLE_PREFIX) !== FALSE) {
+          $group_name = substr($settings[$vars['image_style']], strlen(RESP_IMG_STYLE_PREFIX));
+          if ($mappings = resp_img_mapping_load('mappings.' . $group_name)) {
+            foreach ($mappings as $breakpoint_name => $multipliers) {
+              if (!empty($multipliers)) {
+                foreach ($multipliers as $multiplier => $image_style) {
+                  if (!empty($image_style)) {
+                    if (empty($first_image_style)) {
+                      $first_image_style = $image_style;
+                    }
+                    if (!isset($breakpoint_styles[$breakpoint_name])) {
+                      $breakpoint_styles[$breakpoint_name] = array();
+                    }
+                    $breakpoint_styles[$breakpoint_name][$multiplier] = $image_style;
+                  }
+                }
+              }
+            }
+          }
+        }
 
-function _resp_img_get_suffix() {
-  static $suffix = FALSE;
-  if ($suffix === FALSE && isset($_COOKIE[RESP_IMG_COOKIE]) && is_numeric($_COOKIE[RESP_IMG_COOKIE])) {
-    $width = $_COOKIE[RESP_IMG_COOKIE];
-    $suffix = variable_get('resp_img_default_suffix', '');
-    $widths = resp_img_suffix_load_all_breakpoints();
-    foreach ($widths as $k => $v) {
-      if ($width >= $v) {
-        $suffix = $k;
-        break;
+        if (!empty($breakpoint_styles)) {
+          // Change the formatter so it uses ours.
+          $element['#formatter'] = $vars['#formatter'];
+
+          // Change the formatter on all items as well.
+          $num_fields = count($element['#items']);
+          for ($delta = 0; $delta < $num_fields; $delta++) {
+            $element[$delta]['#theme'] = $vars['#theme'];
+            // Change the image style to the first in use.
+            $element[$delta]['#image_style'] = $first_image_style;
+            $element[$delta]['#breakpoints'] = $breakpoint_styles;
+          }
+        }
+        else {
+          watchdog('Responsive images', t('You have to map at least 1 style for %group.', array('%group' => $group_name)));
+        }
       }
     }
   }
-  return $suffix;
+}
+
+function theme_picture_formatter($variables) {
+  if (!isset($variables['breakpoints']) || empty($variables['breakpoints'])) {
+    return theme('image_formatter', $variables);
+  }
+
+  $item = $variables['item'];
+
+  // Do not output an empty 'title' attribute.
+  if (isset($item['title']) && drupal_strlen($item['title']) == 0) {
+    unset($item['title']);
+  }
+
+  $item['style_name'] = $variables['image_style'];
+  $item['breakpoints'] = $variables['breakpoints'];
+
+  if (!isset($item['path']) && isset($variables['uri'])) {
+    $item['path'] = $variables['uri'];
+  }
+  $output = theme('picture', $item);
+
+  if (isset($variables['path']['path'])) {
+    $path = $variables['path']['path'];
+    $options = isset($variables['path']['options']) ? $variables['path']['options'] : array();
+    $options['html'] = TRUE;
+    $output = l($output, $path, $options);
+  }
+  return $output;
+}
+
+/**
+ * Theme a picture element.
+ */
+function theme_picture($variables) {
+  resp_img_add_js();
+  if (!isset($variables['attributes'])) {
+    $variables['attributes'] = array();
+  }
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = array();
+  }
+  $variables['attributes']['class'][] = RESP_IMG_CLASS;
+
+  // Make sure that width and height are proper values
+  if (isset($variables['width']) && empty($variables['width'])) {
+    unset($variables['width']);
+    unset($variables['height']);
+  }
+  elseif (isset($variables['height']) && empty($variables['height'])) {
+    unset($variables['width']);
+    unset($variables['height']);
+  }
+
+  if (!isset($variables['path']) || empty($variables['path'])) {
+    $variables['path'] = ($variables['uri']);
+  }
+  if (!isset($variables['uri']) || empty($variables['uri'])) {
+    $variables['uri'] = ($variables['path']);
+  }
+
+  $images = array();
+  $output = array();
+
+  // Fallback image.
+  $img = theme('image_style', $variables);
+  $img = str_replace('<img', '', $img);
+  $img = str_replace('/>', '', $img);
+  $images[] = array(
+    'image' => $img,
+  );
+  // All breakpoints and multipliers.
+  foreach ($variables['breakpoints'] as $breakpoint_name => $multipliers) {
+    $breakpoint = breakpoints_breakpoint_load_by_fullkey($breakpoint_name);
+    if ($breakpoint) {
+      $new_images = array();
+      foreach ($multipliers as $multiplier => $image_style) {
+        $new_image = $variables;
+        $new_image['attributes']['class'][] = RESP_IMG_CLASS . '-' . drupal_clean_css_identifier($breakpoint->name);
+        $new_image['style_name'] = $image_style;
+        $new_image['#multiplier'] = $multiplier;
+        $new_images[] = $new_image;
+      }
+      $img = theme('image_style', $new_images[0]);
+      $img = str_replace('<img', '', $img);
+      $img = str_replace('/>', '', $img);
+
+      if (count($new_images) == 1) {
+        $images[] = array(
+          'image' => $img,
+          'media' => $breakpoint->breakpoint,
+        );
+      }
+      else {
+        $srcset = array();
+        foreach ($new_images as $new_image) {
+          $srcset[] = image_style_url($new_image['style_name'], $new_image['uri']) . ' ' . $new_image['#multiplier'];
+        }
+        $img = preg_replace('/src="[^"]*"/', '', $img);
+        $images[] = array(
+          'srcset' => implode(', ', $srcset),
+          'media' => $breakpoint->breakpoint,
+          'image' => $img,
+        );
+      }
+    }
+  }
+
+  if (!empty($images)) {
+    $output[] = '<picture alt="' . check_plain($variables['alt']) . '" title="' . check_plain($variables['title']) . '">';
+
+    // add variants to the output
+    foreach ($images as $image) {
+      if (isset($image['media']) && !empty($image['media'])) {
+        if (!isset($image['srcset'])) {
+          $output[] = '<!-- <source media="' . $image['media'] . '" ' . $image['image'] . ' /> -->';
+          $output[] = '<source media="' . $image['media'] . '" ' . $image['image'] . ' />';
+        }
+        else {
+          $output[] = '<!-- <source media="' . $image['media'] . '" srcset="' . $image['srcset'] . '" ' . $image['image'] . ' /> -->';
+          $output[] = '<source media="' . $image['media'] . '" srcset="' . $image['srcset'] . '" ' . $image['image'] . ' />';
+        }
+      }
+      else {
+        $output[] = '<!-- <source ' . $image['image'] . ' /> -->';
+        $output[] = '<source ' . $image['image'] . ' />';
+      }
+    }
+
+    // output the default image as fallback
+    // $output .= '<img src="' . image_style_url($variables['style_name'], $variables['uri']) . '" alt="' . check_plain($variables['alt']) . '" />';
+    $output[] = '<noscript><img ' . $images[0]['image'] . '/></noscript>';
+    $output[] = '</picture>';
+    return implode("\n", $output);
+  }
+}
+
+/**
+ * colorbox_picture_formatter similar to colorbox_image_formatter.
+ *
+ * only differences are:
+ *   'breakpoints' => $variables['breakpoints'],
+ *   is the last line.
+ */
+function theme_colorbox_picture_formatter($variables) {
+  $item = $variables['item'];
+  $node = $variables['node'];
+  $field = $variables['field'];
+  $settings = $variables['display_settings'];
+
+  $image = array(
+    'path' => $item['uri'],
+    'alt' => $item['alt'],
+    'title' => $item['title'],
+    'style_name' => $settings['colorbox_node_style'],
+    'breakpoints' => $variables['breakpoints'],
+  );
+
+  if (isset($item['width']) && isset($item['height'])) {
+    $image['width'] = $item['width'];
+    $image['height'] = $item['height'];
+  }
+
+  switch ($settings['colorbox_caption']) {
+     case 'auto':
+      // If the title is empty use alt or the node title in that order.
+      if (!empty($image['title'])) {
+        $caption = $image['title'];
+      }
+      elseif (!empty($image['alt'])) {
+        $caption = $image['alt'];
+      }
+      elseif (!empty($node->title)) {
+        $caption = $node->title;
+      }
+      else {
+        $caption = '';
+      }
+      break;
+    case 'title':
+      $caption = $image['title'];
+      break;
+    case 'alt':
+      $caption = $image['alt'];
+      break;
+    case 'node_title':
+      $caption = $node->title;
+      break;
+    case 'custom':
+      $caption = token_replace($settings['colorbox_caption_custom'], array('node' => $node));
+      break;
+    default:
+      $caption = '';
+  }
+
+  // Shorten the caption for the example styles or when caption shortening is active.
+  $colorbox_style = variable_get('colorbox_style', 'default');
+  $trim_length = variable_get('colorbox_caption_trim_length', 75);
+  if (((strpos($colorbox_style, 'colorbox/example') !== FALSE) || variable_get('colorbox_caption_trim', 0)) && (drupal_strlen($caption) > $trim_length)) {
+    $caption = drupal_substr($caption, 0, $trim_length - 5) . '...';
+  }
+
+  // Build the gallery id.
+  $nid = !empty($node->nid) ? $node->nid : 'nid';
+  switch ($settings['colorbox_gallery']) {
+    case 'post':
+      $gallery_id = 'gallery-' . $nid;
+      break;
+    case 'page':
+      $gallery_id = 'gallery-all';
+      break;
+    case 'field_post':
+      $gallery_id = 'gallery-' . $nid . '-' . $field['field_name'];
+      break;
+    case 'field_page':
+      $gallery_id = 'gallery-' . $field['field_name'];
+      break;
+    case 'custom':
+      $gallery_id = $settings['colorbox_gallery_custom'];
+      break;
+    default:
+      $gallery_id = '';
+  }
+
+  if ($style_name = $settings['colorbox_image_style']) {
+    $path = image_style_url($style_name, $image['path']);
+  }
+  else {
+    $path = file_create_url($image['path']);
+  }
+
+  return theme('colorbox_picturefield', array('image' => $image, 'path' => $path, 'title' => $caption, 'gid' => $gallery_id));
+}
+
+/**
+ * theme_colorbox_picturefield similar to theme_colorbox_imagefield.
+ *
+ * only difference is: $image = theme('picture', $variables['image']);.
+ */
+function theme_colorbox_picturefield($variables) {
+  $class = array('colorbox');
+
+  if ($variables['image']['style_name'] == 'hide') {
+    $image = '';
+    $class[] = 'js-hide';
+  }
+  else if (!empty($variables['image']['style_name'])) {
+    $image = theme('picture', $variables['image']);
+  }
+  else {
+    $image = theme('image', $variables['image']);
+  }
+
+  $options = array(
+    'html' => TRUE,
+    'attributes' => array(
+      'title' => $variables['title'],
+      'class' => implode(' ', $class),
+      'rel' => $variables['gid'],
+    )
+  );
+
+  return l($image, $variables['path'], $options);
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function resp_img_field_formatter_info_alter(&$info) {
+  foreach ($info as $formatter_key => &$formatter) {
+    if ($formatter_key == 'image') {
+      if (!isset($formatter['settings']) || !is_array($formatter['settings'])) {
+        $formatter['settings'] = array();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ */
+function resp_img_field_formatter_settings_form_alter(&$settings_form, $context) {
+  if (isset($context['field']['type']) && $context['field']['type'] === 'image') {
+    $breakpoint_groups = breakpoints_breakpoint_group_load_all();
+    if ($breakpoint_groups && !empty($breakpoint_groups)) {
+      foreach ($breakpoint_groups as $machine_name => $breakpoint_group) {
+        if (isset($settings_form['image_style'])) {
+          $settings_form['image_style']['#options'][RESP_IMG_STYLE_PREFIX . $machine_name] = t('!group (Responsive)', array('!group' => $breakpoint_group->name));
+        }
+        if (isset($settings_form['colorbox_node_style'])) {
+          $settings_form['colorbox_node_style']['#options'][RESP_IMG_STYLE_PREFIX . $machine_name] = t('!group (Responsive)', array('!group' => $breakpoint_group->name));
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function resp_img_field_formatter_settings_summary_alter(&$summary, $context) {
+  if (isset($context['field']['type']) && $context['field']['type'] === 'image') {
+    $settings = $context['instance']['display'][$context['view_mode']]['settings'];
+    if (isset($settings['image_style']) && strpos($settings['image_style'], RESP_IMG_STYLE_PREFIX) !== FALSE) {
+      $group_name = substr($settings['image_style'], strlen(RESP_IMG_STYLE_PREFIX));
+      $summary = 'Responsive mode activated using ' . $group_name;
+    }
+    if (isset($settings['colorbox_node_style']) && strpos($settings['colorbox_node_style'], RESP_IMG_STYLE_PREFIX) !== FALSE) {
+      $group_name = substr($settings['colorbox_node_style'], strlen(RESP_IMG_STYLE_PREFIX));
+      $summary .= '<br />Responsive mode activated using ' . $group_name;
+    }
+  }
 }
