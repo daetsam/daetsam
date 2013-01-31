@@ -89,6 +89,9 @@ img.logos-redes-sociales {
 /* ----------------------------------------------------------------------
    Regi—n 'Footer First'
    ---------------------------------------------------------------------- */
+.reg-footer-first {
+  text-align:center;
+}
 
 .reg-footer-first p {
   text-align: left;
