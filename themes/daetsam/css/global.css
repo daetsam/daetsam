@@ -432,11 +432,13 @@ body .reg-menu h2.block-title { /* Ajusta la separación entre los elementos de 
 
 .redes-sociales {
   float:left;
-  margin-left: 2px;
+/*  margin-left: 2px;*/
 }
-
 .redes-sociales a {
   margin-left:5px;
+}
+.redes-sociales a:first-child {
+  margin-left:0;
 }
 
 img.logos-redes-sociales {
@@ -445,10 +447,10 @@ img.logos-redes-sociales {
 }
 
 .reg-search-bar input[type="text"] {
-  width: 35%; /* Ajusta el ancho de la barra de búsqueda */
+  width: 50%; /* Ajusta el ancho de la barra de búsqueda */
   height: 1.75em; /* Estrecha la altura de la barra de búsqueda a 21px */
   float: left; /* Barra de búsqueda alineada con los enlaces de redes sociales */
-  margin: 1px 0 0 6px;
+  margin: 1px 0 0 8px;
 }
 
 .reg-search-bar .clearfix:after { /* Para poder poner la barra de búsqueda en la misma línea que los enlaces de redes sociales */
