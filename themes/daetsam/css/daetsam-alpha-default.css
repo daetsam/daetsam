@@ -65,7 +65,7 @@ img.logos-redes-sociales {
    Regi—n 'Menu Bottom Second'
    ---------------------------------------------------------------------- */
 
-.reg-menu-bottom-second p {
+.reg-menu-bottom-second {
   text-align: right;
 }
 
@@ -90,11 +90,7 @@ img.logos-redes-sociales {
    Regi—n 'Footer First'
    ---------------------------------------------------------------------- */
 .reg-footer-first {
-  text-align:center;
-}
-
-.reg-footer-first p {
-  text-align: left;
+  text-align:left;
 }
 
 /* ----------------------------------------------------------------------

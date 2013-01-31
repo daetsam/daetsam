@@ -509,7 +509,7 @@ img.logos-redes-sociales {
    ---------------------------------------------------------------------- */
 
 .reg-menu-bottom-second {
-  text-align:right;
+  text-align:left;
 }
 
 /* ----------------------------------------------------------------------
@@ -792,7 +792,7 @@ dl.statistics dt.statistcs-highlight {
    Región 'Footer First'
    ---------------------------------------------------------------------- */
 
-.reg-footer-first p {
+.reg-footer-first {
   text-align: center;
   margin-bottom: 1em;
 }
