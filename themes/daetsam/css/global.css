@@ -802,12 +802,13 @@ dl.statistics dt.statistcs-highlight {
    ---------------------------------------------------------------------- */
 
 .reg-footer-second div.block-image {
-  width: 14.25%; /* Ancho máximo imagen logo completo = 100px */
+  /*width: 14.25%; /* Ancho máximo imagen logo completo = 100px */
+  text-align:center;
   margin: auto;
 }
 
 .reg-footer-second img {
-  width: 100%;
+  /*width: 100%;*/
 }
 
 

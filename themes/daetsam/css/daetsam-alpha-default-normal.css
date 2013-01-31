@@ -194,6 +194,6 @@ img.logos-redes-sociales {
    ---------------------------------------------------------------------- */
 
 .reg-footer-second img {
-  width: 21.74%; /* Ancho imagen logo completo = 100px */
+  /*width: 21.74%; /* Ancho imagen logo completo = 100px */
   margin-top: .3846em; /* = 5px */
 }
