@@ -637,6 +637,13 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 /* ----------------------------------------------------------------------
    Región 'Content'
    ---------------------------------------------------------------------- */
+.lista-con-linea li {
+   	margin-bottom:10px;
+	border-bottom:#000 3px solid;
+}
+.lista-con-linea li h2 {
+  margin:0;
+}
 @media all and (max-width:730px) {
 .reg-content .grid-1,
 .reg-content .grid-2,
@@ -821,28 +828,6 @@ dl.statistics dt.statistcs-highlight {
    Bloque vista 'asociaciones 1'
    Bloque vista 'asociaciones 2'
    ====================================================================== */
-#block-views-asociaciones-block-1 .item-list ul li,
-#block-views-asociaciones-block-2 .item-list ul li,
-#block-views-last-news-block-1 .item-list ul li,
-#block-views-last-news-block-2 .item-list ul li,
-#block-views-last-news-block-3 .item-list ul li,
-#block-views-last-news-index-block-daetsam .item-list ul li,
-#block-views-last-news-index-block-enlaetsam .item-list ul li,
-#block-views-last-news-index-block-offetsam .item-list ul li {
-	margin-bottom:10px;
-	border-bottom:#000 3px solid;
-}
-
-#block-views-asociaciones-block-1 .item-list ul li h2,
-#block-views-asociaciones-block-2 .item-list ul li h2,
-#block-views-last-news-block-1 .item-list ul li h2, 
-#block-views-last-news-block-2 .item-list ul li h2, 
-#block-views-last-news-block-3 .item-list ul li h2, 
-#block-views-last-news-index-block-daetsam .item-list ul li h2, 
-#block-views-last-news-index-block-enlaetsam .item-list ul li h2, 
-#block-views-last-news-index-block-offetsam .item-list ul li h2 {
-	margin-top:0;
-}
 #block-views-asociaciones-block-1 .views-field-field-imagen,
 #block-views-asociaciones-block-2 .views-field-field-imagen {
 	text-align:center;
