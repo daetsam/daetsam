@@ -636,7 +636,8 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 /* ----------------------------------------------------------------------
    Región 'Content'
    ---------------------------------------------------------------------- */
-.linea-inferior-gruesa {
+.linea-inferior-gruesa,
+.linea-inferior-gruesa h2 {
   margin-bottom:10px;
   border-bottom:#000 3px solid;
 }
