@@ -130,13 +130,13 @@ em em, cite cite {
   font-style: normal;
 }
 
-acronym {
+abbr {
   border-bottom: 1px dotted #eee;
   cursor: help;
   font-size: 1em;
 }
 
-acronym:hover {
+abbr:hover {
   background: none repeat scroll 0 0 #f3f3f3;
   border-bottom: 1px dotted #aaa;
   color: #333;
@@ -172,14 +172,6 @@ mark {
   color: #000;
   font-style: italic;
   font-weight: bold;
-}
-
-abbr[title] {
-  border-bottom: 1px dotted;
-}
-
-abbr {
-  cursor: help;
 }
 
 sup,
