@@ -636,13 +636,20 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 /* ----------------------------------------------------------------------
    Región 'Content'
    ---------------------------------------------------------------------- */
-.lista-con-linea ul li {
+.linea-inferior-gruesa {
   margin-bottom:10px;
   border-bottom:#000 3px solid;
 }
-.lista-con-linea ul li h2 {
+
+.sin-margen-superior {
   margin-top:0;
 }
+
+.linea-inferior-fina {
+  margin-bottom:10px;
+  border-bottom:#000 1px solid;
+}
+
 @media all and (max-width:730px) {
 .reg-content .grid-1,
 .reg-content .grid-2,
