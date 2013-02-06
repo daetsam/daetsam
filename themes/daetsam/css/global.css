@@ -224,8 +224,9 @@ footer.submitted {
   font-size: .834em; /* = 10px */
 }
 
-ol.lista-sin-marcadores,
-ul.lista-sin-marcadores { /* Hace que no aparezcan los marcadores de los elementos de las listas con esta clase */
+.lista-sin-marcadores,
+.lista-sin-marcadores ul,
+.lista-sin-marcadores ol { /* Hace que no aparezcan los marcadores de los elementos de las listas con esta clase */
   list-style: none;
   padding-left: 0;
 }
@@ -646,8 +647,12 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 }
 
 .linea-inferior-fina {
+  margin-top:5px;
   margin-bottom:10px;
   border-bottom:#000 1px solid;
+}
+
+.con-margen-superior {
 }
 
 @media all and (max-width:730px) {
