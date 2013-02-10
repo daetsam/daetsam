@@ -15,38 +15,6 @@ body {
   font-size: 81.25%;  /* 1em = 13px */
 }
 
-h1 {
-  font-size: 1.15384em; /* = 15px */
-}
-
-h2 {
-  font-size: 1.0769em; /* = 14px */
-}
-
-h2.block-title {
-  font-size: 1.0769em; /* = 14px */
-}
-
-h2.node-title {
-  font-size: 1.0769em; /* = 14px */
-}
-
-h3 {
-  font-size: 1.0769em; /* = 14px */
-}
-
-h4 {
-  font-size: 1.0769em; /* = 14px */
-}
-
-h5 {
-  font-size: 1em; /* = 13px */
-}
-
-h6 {
-  font-size: 1em; /* = 13px */
-}
-
 pre {
   font-size: 12px;
 }
