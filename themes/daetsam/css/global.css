@@ -536,6 +536,10 @@ img.logos-redes-sociales {
    Región 'Header Top'
    ---------------------------------------------------------------------- */
 
+.reg-header-top .block-image {
+  display:none;
+}
+
 .reg-header-top h1 {
   font-family: 'Steelfish';
   letter-spacing: normal;
