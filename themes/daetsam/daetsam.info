@@ -4,6 +4,10 @@ core = '7.x'
 engine = 'phptemplate'
 screenshot = 'screenshot.png'
 base theme = 'omega'
+
+regions[devregion_especificas] = 'DEV region especificas'
+regions[devregion_cabeceras] = 'DEV cabeceras'
+
 regions[page_top] = 'Page Top'
 regions[page_bottom] = 'Page Bottom'
 regions[content] = 'Content'
@@ -366,5 +370,6 @@ settings[alpha_region_footer_second_columns] = '12'
 settings[alpha_region_footer_second_suffix] = ''
 settings[alpha_region_footer_second_weight] = '2'
 settings[alpha_region_footer_second_css] = ''
+plugins[advanced_forum][styles] = 'advanced_forum_styles'
 version = '7.x-1.1'
 
