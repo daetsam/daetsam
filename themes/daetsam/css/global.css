@@ -535,7 +535,30 @@ img.logos-redes-sociales {
 /* ----------------------------------------------------------------------
    Región 'Header Top'
    ---------------------------------------------------------------------- */
+.reg-header-top {
+  display:inline-block;
+}
+.block-imageblock-5,
+.block-imageblock-4,
+.block-imageblock-3 {
+  display:inline-block;
+}
+.block-31,
 
+.block-25,
+.block-26,
+.block-27,
+.block-28,
+.block-29,
+
+.block-18,
+.block-19,
+.block-20,
+.block-21,
+.block-22,
+.block-23 {
+  display:inline-block;
+}
 .reg-header-top .block-image {
   display:none;
 }
