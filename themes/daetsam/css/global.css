@@ -627,7 +627,7 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
 }
 
 div.read-more {
-  margin-bottom:5px;
+  margin-bottom:.5em;
 }
 
 
