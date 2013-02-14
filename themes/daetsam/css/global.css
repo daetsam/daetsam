@@ -542,6 +542,7 @@ img.logos-redes-sociales {
 .block-imageblock-4,
 .block-imageblock-3 {
   display:inline-block;
+  vertical-align:middle;
 }
 .block-31,
 
@@ -558,6 +559,7 @@ img.logos-redes-sociales {
 .block-22,
 .block-23 {
   display:inline-block;
+  vertical-align:middle;
 }
 .reg-header-top .block-image {
   display:none;
