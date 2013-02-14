@@ -540,9 +540,11 @@ img.logos-redes-sociales {
 }
 .block-imageblock-5,
 .block-imageblock-4,
-.block-imageblock-3 {
+.block-imageblock-3,
+.block-imageblock-8 {
   display:inline-block;
   vertical-align:middle;
+  margin-left:1.5em;
 }
 .block-31,
 
