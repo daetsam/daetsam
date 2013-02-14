@@ -626,6 +626,9 @@ li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión
   list-style: none;
 }
 
+div.read-more {
+  margin-bottom:5px;
+}
 
 
 /* ----------------------------------------------------------------------
