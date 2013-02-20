@@ -535,37 +535,48 @@ img.logos-redes-sociales {
 /* ----------------------------------------------------------------------
    Región 'Header Top'
    ---------------------------------------------------------------------- */
+
 .reg-header-top {
   display:inline-block;
 }
+
 .block-imageblock-5,
 .block-imageblock-4,
-.block-imageblock-3,
-.block-imageblock-8,
-.block-imageblock-9,
-.block-imageblock-12 {
-  display:inline-block;
+.block-imageblock-3, /* Bloque de imagen icono Servicios */
+.block-imageblock-8, /* Bloque de imagen icono Foros */
+.block-imageblock-9, /* Bloque de imagen icono Noticias */
+.block-imageblock-12 /* Bloque de imagen logo 255 */ {
+  display:inline-block; /* Hace que estos bloques de imágenes se muestren en una sola línea cuando son incluidos en cabeceras */
   vertical-align:middle;
   margin-left:1.5em;
 }
-.block-31,
-.block-16,
 
-.block-25,
-.block-26,
-.block-27,
-.block-28,
-.block-29,
+.block-16, /* Bloque de cabecera '255' */
 
-.block-18,
-.block-19,
-.block-20,
-.block-21,
-.block-22,
-.block-23 {
-  display:inline-block;
+.block-18, /* Bloque de cabecera 'Ayudas al estudio' */
+.block-19, /* Bloque de cabecera 'CDC' */
+.block-20, /* Bloque de cabecera 'Cultura' */
+.block-21, /* Bloque de cabecera 'Cursos Daetsam' */
+.block-22, /* Bloque de cabecera 'Alquileres' */
+.block-23 /* Bloque de cabecera 'Orla' */
+
+.block-24, /* Bloque de cabecera 'Últimas noticias' */
+.block-25, /* Bloque de cabecera 'Agenda' */
+.block-26, /* Bloque de cabecera 'Becas y ayudas' */
+.block-27, /* Bloque de cabecera 'Cursos' */
+.block-28, /* Bloque de cabecera 'Concursos' */
+.block-29, /* Bloque de cabecera 'Trabajo' */
+.block-30, /* Bloque de cabecera 'Archivo' */
+
+.block-31, /* Bloque de cabecera 'Académico' */
+.block-32, /* Bloque de cabecera 'Recursos' */
+.block-33, /* Bloque de cabecera 'Movilidad' */
+.block-34, /* Bloque de cabecera 'Estudios y profesión' */
+.block-35 /* Bloque de cabecera 'Intercambios' */ { 
+  display:inline-block; /* Hace que estos bloques de títulos de cabeceras se muestren en una sola línea cuando las cabeceras también incluyen bloques de imágenes */
   vertical-align:middle;
 }
+
 .reg-header-top .block-image {
   display:none;
 }
