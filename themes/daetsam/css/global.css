@@ -234,6 +234,7 @@ footer.submitted {
 ul.lista-horizontal li,
 ol.lista-horizontal li { /* Hace que los elementos de una lista se pongan uno a continuación del otro en horizontal */
   display:inline-block;
+  padding:0 1px;
 }
 
 /* ======================================================================
