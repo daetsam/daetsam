@@ -68,7 +68,7 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
     // Build the select dropdown for the text/node_reference field that the user
     // wants to use to (optionally) populate the LOCATION.
     $location_fields = date_ical_get_location_fields($this->base_table);
-    $location_options = array('none' => '- None -');
+    $location_options = array('none' => t('- None -'));
     foreach ($location_fields['name'] as $item => $value) {
       $location_options[$item] = $value['label'];
     }
@@ -205,7 +205,6 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
     }
     
     module_load_include('inc', 'date_api', 'date_api_ical');
-    $item_text = '';
     
     // If the user specified a LOCATION field, pull that data from the entity.
     $location = '';
@@ -234,11 +233,24 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
     
     // Create the rendered display using the display settings from the 'iCal' view mode.
     $rendered_array = entity_view($this->entity_type, array($entity), 'ical', $this->language, TRUE);
-    $item_text = drupal_render($rendered_array);
+    $data = array(
+      'description' => drupal_render($rendered_array),
+      'summary' => entity_label($this->entity_type, $entity)
+    );
+    
+    // Allow other modules to alter the HTML of the Summary and Description,
+    // before it gets converted to iCal-compliant plaintext. This allows users
+    // to set up a newline between fields, for instance.
+    $context = array(
+      'entity' => $entity,
+      'entity_type' => $this->entity_type,
+      'language' => $this->language,
+    );
+    drupal_alter('date_ical_html', $data, $this->view, $context);
     
     $event = array();
-    $event['summary'] = trim(drupal_html_to_text(entity_label($this->entity_type, $entity)));
-    $event['description'] = trim(drupal_html_to_text($item_text));
+    $event['summary'] = trim(drupal_html_to_text($data['summary']));
+    $event['description'] = trim(drupal_html_to_text($data['description']));
     $event['all_day'] = $all_day;
     $event['start'] = $start;
     $event['end'] = $end;
@@ -246,7 +258,7 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
     $uri['options']['absolute'] = TRUE;
     $event['url'] = url($uri['path'], $uri['options']);
     $event['uid'] = !empty($entity->date_id) ? $entity->date_id[0] : $event['url'];
-    $event['rrule'] = $is_field && array_key_exists('rrule', $item) ? $item['rrule'] : '';
+    $event['rrule'] = $is_field && array_key_exists('rrule', $date_field) ? $date_field['rrule'] : '';
     if ($location) {
       $event['location'] = $location;
     }
@@ -257,11 +269,6 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
     $event['last-modified'] = new DateObject($entity->changed, new DateTimeZone('UTC'));
     
     // Allow other modules to alter the structured event object, before it gets converted to an iCal VEVENT.
-    $context = array(
-      'entity' => $entity,
-      'entity_type' => $this->entity_type,
-      'language' => $this->language,
-    );
     drupal_alter('date_ical_feed_event_render', $event, $this->view, $context);
     
     return $event;

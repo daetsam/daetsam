@@ -1,6 +1,27 @@
 <?php
 
 /**
+ * Alter the HTML of an event's Summary and Description, before it gets converted
+ * to plaintext for output in an iCal feed.
+ *
+ * @param $data
+ *   A reference to an associative array with the following keys and values:
+ *   - 'description': The rendered HTML of the iCal view mode of the entity.
+ *   - 'summary': The title of the entity.
+ * @param $view
+ *  The view object that is being executed to render the iCal feed.
+ * @param $context
+ *   An associative array of context, with the following keys and values:
+ *   - 'entity_type': The type of entity being rendered, 'node', 'user' etc.
+ *   - 'entity': The fully loaded entity being rendered.
+ *   - 'language': The language code that indicates which translation of field
+ *     data should be used.
+ */
+function hook_date_ical_html_alter(&$data, $view, &$context) {
+
+}
+
+/**
  * Modify a structured event before it is rendered to iCal format.
  *
  * This hook is invoked after the Date iCal module has generated its
@@ -19,7 +40,6 @@
  *   - 'entity': The fully loaded entity being rendered.
  *   - 'language': The language code that indicates which translation of field
  *     data should be used.
- *
  */
 function hook_date_ical_feed_event_render_alter(&$event, $view, &$context) {
   // Simple example adding the location to a rendered event from a simple

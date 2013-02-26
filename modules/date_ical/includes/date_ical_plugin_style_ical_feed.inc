@@ -10,11 +10,8 @@
  */
 class date_ical_plugin_style_ical_feed extends views_plugin_style {
   
-  function _default_calendar_name() {
-    $view_title = $this->view->get_title();
-    $calendar_name = variable_get('site_name', 'Drupal');
-    $calendar_name .= !empty($view_title) ? ': ' . $view_title : '';
-    return $calendar_name;
+  function _get_option($option_name) {
+    return isset($this->options[$option_name]) ? $this->options[$option_name] : '';
   }
   
   // Sets up the iCal feed icon on calendar pages.
@@ -26,13 +23,23 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
       $url_options['query'] = $input;
     }
     $url_options['absolute'] = TRUE;
+    
     $url = url($this->view->get_url(NULL, $path), $url_options);
-    if (empty($this->preview)) {
-      $this->view->feed_icon .= theme('date_ical_icon', array('url' => $url, 'title' => $title));
+    // If the user didn't disable the option, change the scheme to webcal:// so
+    // that calendar clients can automatically subscribe via the iCal link.
+    if (!$this->_get_option('disable_webcal')) {
+      $url = str_replace('http://', 'webcal://', $url);
+    }
+    
+    // Only render the feed icon and header tag if this isn't a Preview on the
+    // View config page.
+    if (empty($this->view->live_preview)) {
+      $tooltip = t('Add to My Calendar');
+      $this->view->feed_icon .= theme('date_ical_icon', array('url' => check_url($url), 'tooltip' => $tooltip));
       drupal_add_html_head_link(array(
         'rel' => 'alternate',
-        'type' => 'application/calendar',
-        'title' => $title,
+        'type' => 'text/calendar',
+        'title' => $tooltip,
         'href' => $url
       ));
     }
@@ -44,17 +51,33 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
     $form['cal_name'] = array(
       '#type' => 'textfield',
       '#title' => t('iCal Calendar Name'),
-      '#default_value' => $this->options['cal_name'],
+      '#default_value' => $this->_get_option('cal_name'),
       '#description' => t('This will appear as the title of the iCal feed. If ' .
         'left blank, the View Title will be used. If that is also blank, the site ' .
         'name will be inserted as the iCal feed title.'),
+    );
+    $form['no_calname'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Exclude Calendar Name'),
+      '#default_value' => $this->_get_option('no_calname'),
+      '#description' => t("Excluding the X-WR-CALNAME value from the iCal Feed causes
+        some calendar clients to add the events in the feed to an existing calendar, rather
+        than creating a whole new calendar for them."),
+    );
+    $form['disable_webcal'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Disable webcal://'),
+      '#default_value' => $this->_get_option('disable_webcal'),
+      '#description' => t("By default, the feed URL will use the webcal:// scheme, which allows calendar
+        clients to easily subscribe to the feed. If you want your users to instead download this iCal
+        feed as a file, activate this option."),
     );
   }
   
   function render() {
     if (empty($this->row_plugin) || $this->row_plugin->plugin_name != 'date_ical') {
       debug('views_plugin_style_ical_feed: This style plugin supports only the iCal Entity row plugin.');
-      return 'To enable iCal output, this view\'s Format must be configured to Show: iCal Entity.';
+      return t('To enable iCal output, this view\'s Format must be configured to Show: iCal Entity.');
     }
     $rows = array();
     foreach ($this->view->result as $row_index => $row) {
@@ -72,9 +95,9 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
       $vcalendar->setMethod('PUBLISH');
       
       // If the iCal Calendar Name has been set in the Feed Style options, it's used as the
-      // title in the iCal feed. If not, the View Title is used. If that is blank, then the
-      // Site Name is used.
-      $cal_name = $this->options['cal_name'];
+      // title in the iCal feed. If not, the View Title is used. If that is also blank, then
+      // the Site Name is used.
+      $cal_name = $this->_get_option('cal_name');
       if (empty($cal_name)) {
         $view_title = $this->view->get_title();
         if (!empty($view_title)) {
@@ -84,9 +107,12 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
           $cal_name = variable_get('site_name', 'Drupal');
         }
       }
-      $vcalendar->setProperty('x-wr-calname', $cal_name, array('VALUE' => 'TEXT'));
+      // Only include the X-WR-CALNAME property if the user didn't check "Exclude Calendar Name".
+      if (!$this->_get_option('no_calname')) {
+        $vcalendar->setProperty('x-wr-calname', $cal_name, array('VALUE' => 'TEXT'));
+      }
 
-      // Now add the vevents.
+      // Now add the VEVENTs.
       $timezones = array();
       foreach ($rows as $row) {
         if (empty($row)) {
@@ -152,14 +178,14 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
               date_timezone_set($except, $rendered_start['tz']);
               $rendered_date = $except->toArray();
               $exdates[] = array(
-                'year' => $rendered_date['year'],
+                'year' =>  $rendered_date['year'],
                 'month' => $rendered_date['month'],
-                'day' => $rendered_date['day'],
+                'day' =>   $rendered_date['day'],
                 // Use the time information from the start date.
-                'hour' => $rendered_start['hour'],
-                'min' => $rendered_start['minute'],
+                'hour' =>   $rendered_start['hour'],
+                'min' =>    $rendered_start['minute'],
                 'second' => $rendered_start['second'],
-                'tz' => $rendered_start['tz']->getName(),
+                'tz' =>     $rendered_start['tz']->getName(),
               );
             }
             // Add those exclusions as 'EXDATE's.
@@ -174,27 +200,27 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
               $rendered_date = $add->toArray();
 
               $add_date = array(
-                'year' => $rendered_date['year'],
+                'year' =>  $rendered_date['year'],
                 'month' => $rendered_date['month'],
-                'day' => $rendered_date['day'],
+                'day' =>   $rendered_date['day'],
                 // Use the time information from the start date.
-                'hour' => $rendered_start['hour'],
-                'min' => $rendered_start['minute'],
+                'hour' =>   $rendered_start['hour'],
+                'min' =>    $rendered_start['minute'],
                 'second' => $rendered_start['second'],
-                'tz' => $rendered_start['tz']->getName(),
+                'tz' =>     $rendered_start['tz']->getName(),
               );
               // If there was an end date specified, use that too.
               if (!empty($row['end'])) {
                 $add_date = array($add_date);
                 $add_date[] = array(
-                  'year' => $rendered_date['year'],
+                  'year' =>  $rendered_date['year'],
                   'month' => $rendered_date['month'],
-                  'day' => $rendered_date['day'],
+                  'day' =>   $rendered_date['day'],
                   // Use the time information from the end date.
-                  'hour' => $rendered_end['hour'],
-                  'min' => $rendered_end['minute'],
+                  'hour' =>   $rendered_end['hour'],
+                  'min' =>    $rendered_end['minute'],
                   'second' => $rendered_end['second'],
-                  'tz' => $rendered_end['tz']->getName(),
+                  'tz' =>     $rendered_end['tz']->getName(),
                 );
               }
 
@@ -230,7 +256,7 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
         drupal_alter('date_ical_feed_ical_vevent_render', $vevent, $this->view, $row);
       }
 
-      // Now add all the timezones we just used to the file too.
+      // Now add all the timezones we just used to the calendar.
       foreach ($timezones as $timezone) {
         iCalUtilityFunctions::createTimezone($vcalendar, $timezone);
       }
@@ -244,13 +270,24 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
       // The iCalcreator library isn't available, so we can't output anything.
       $output = 'Please install the iCalcreator library to enable iCal output.';
     }
-
-    if (empty($variables['view']->live_preview)) {
+    
+    // These steps shouldn't be run when doing a Preview on the View config page.
+    if (empty($this->view->live_preview)) {
       // Prevent devel module from appending queries to ical export.
       $GLOBALS['devel_shutdown'] = FALSE;
-      drupal_add_http_header('Content-Type', 'application/calendar; charset=utf-8');
+      
+      drupal_add_http_header('Content-Type', 'text/calendar; charset=utf-8');
+      
+      // For sites with Clean URLs disabled, the "path" value in the view Display
+      // doesn't actually get applied to the URL of the calendar feed. So, we
+      // need to manually instruct browsers to download a .ics file.
+      if (!variable_get('clean_url', FALSE)) {
+        $path_array = explode('/', $this->display->display_options['path']);
+        $filename = array_pop($path_array);
+        drupal_add_http_header('Content-Disposition', "attachment; filename=\"$filename\"");
+      }
     }
-
+    
     return $output;
   }
   

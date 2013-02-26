@@ -23,7 +23,7 @@ function date_ical_views_api() {
 function date_ical_theme($existing, $type, $theme, $path) {
   return array(
     'date_ical_icon' => array(
-      'variables' => array('url' => NULL),
+      'variables' => array('url' => NULL, 'tooltip' => NULL),
     ),
   );
 }
@@ -32,23 +32,20 @@ function date_ical_theme($existing, $type, $theme, $path) {
  * The theme for the ical icon.
  */
 function theme_date_ical_icon($variables) {
-  $url = $variables['url'];
-  $variables = array(
-    'path' => drupal_get_path('module', 'date_ical') . '/images/ical-feed-icon-34x14.png',
-    'title' => t('Add to my calendar'),
-    'alt' => t('Add to my calendar'),
-  );
+  $variables['path'] = drupal_get_path('module', 'date_ical') . '/images/ical-feed-icon-34x14.png';
+  $variables['alt'] = $variables['title'] = $variables['tooltip'];
   if ($image = theme('image', $variables)) {
-    return '<a href="' . check_url($url) . '" class="ical-icon" title="ical">' . $image . '</a>';
+    return "<a href='{$variables['url']}' class='ical-icon'>$image</a>";
+  }
+  else {
+    return "<a href='{$variables['url']}' class='ical-icon'>{$variables['tooltip']}</a>";
   }
 }
 
 /**
  * Implements hook_preprocess_HOOK() for nodes.
  *
- * Hide extraneous information when printing an iCal node. The same thing can be
- * done in the theme for other entities, and this function can be overridden in
- * the theme to produce different results for nodes.
+ * Hide extraneous information when rendering the iCal view mode of a node.
  */
 function date_ical_preprocess_node(&$variables) {
   if (isset($variables['view_mode']) && $variables['view_mode'] == 'ical') {
@@ -320,13 +317,14 @@ function date_ical_get_location_fields($base = 'node', $reset = FALSE) {
 
 /**
  *  Identify all potential LOCATION fields.
- *  This is a cut down version of _date_views_fields() from date_views_fields.inc in date_views module.
+ *  This is a cut down version of _date_views_fields() from date_views_fields.inc
+ *  in date_views module.
  *
  *  @return
  *    array with fieldname, type, and table.
  *  @see
- *    date_views_date_views_fields() which implements
- *    the hook_date_views_fields() for the core date fields.
+ *    date_views_date_views_fields(), which implements hook_date_views_fields()
+ *    for the core date fields.
  */
 function _date_ical_get_location_fields($base = 'node') {
   // Make sure $base is never empty.

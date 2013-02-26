@@ -22,6 +22,12 @@ To install the iCalcreator library, download it from
 http://kigkonsult.se/downloads/index.php#iCalcreator and extract the zip file.
 Inside that file you'll find iCalcreator.class.php. Copy that file to a folder 
 in your Drupal site named "sites/all/libraries/iCalcreator".
+Then clear the cache on your site, by using either "drush cc all"
+or logging in to your site and going to Configuration -> Development -> 
+Performance and click the "Clear all caches" button. This is necessary because
+libraries are cached, and you may see confusing behavior from Date iCal if the
+iCalcreator library gets cached at a bad time.
+
 
 To confirm that iCalcreator is installed correctly, log in to your Drupal site
 and navigate to the admin/reports/status page. If the row titled "Date iCal" is
@@ -114,9 +120,11 @@ The Feeds plugin was originally written by ekes, for the "iCal feed parser"
 module (http://www.drupal.org/project/parser_ical). It was modified and 
 improved for Date iCal by coredumperror.
 
-At this time, Date iCal supports outputting iCal calendars only for groups of
-events. To put an "Add to calendar" button on individual event nodes, try the 
-<a href="http://drupal.org/project/addtocal">Add to Cal</a> module.
+At this time, Date iCal supports outputting iCal calendars only through Views.
+To put an "Add to calendar" button on individual event nodes, try the 
+<a href="http://drupal.org/project/addtocal">Add to Cal</a> module, or follow
+the instructions created by the estimable nmc at:
+http://nmc-codes.blogspot.ca/2012/11/creating-ical-feed-for-single-node-in.html
 
 Developers who wish to implement more powerful manipulation of event data can
 read the date_ical.api.php file to learn about the various alter hooks that 
