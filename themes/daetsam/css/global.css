@@ -557,6 +557,10 @@ img.logos-redes-sociales {
   margin-left:1.5em;
 }
 
+.block-iconologos img {
+  height:125px;
+}
+
 .block-16, /* Bloque de cabecera '255' */
 
 .block-18, /* Bloque de cabecera 'Ayudas al estudio' */
@@ -897,7 +901,7 @@ dl.statistics dt.statistcs-highlight {
    Bloque vista 'asociaciones 1'
    Bloque vista 'asociaciones 2'
    ====================================================================== */
-#block-views-asociaciones-block-1 .views-field-field-imagen,
-#block-views-asociaciones-block-2 .views-field-field-imagen {
+#block-views-asociaciones-block-1 .field-name-field-imagen,
+#block-views-asociaciones-block-2 .field-name-field-imagen {
 	text-align:center;
 }
