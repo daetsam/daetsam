@@ -13,7 +13,7 @@
  * - $forum_description: Description of the forum these topics are in.
  *
  * Each $topic in $topics contains:
- * - $topic->icon: The icon to display.
+ * - $topic->icon: The icon to display
  * - $topic->moved: A flag to indicate whether the topic has been moved to
  *   another forum.
  * - $topic->title: The title of the topic. Safe to output.
@@ -35,6 +35,17 @@
  * @see advanced_forum_preprocess_forum_topic_list()
  */
 ?>
+<h2 class="block-title linea-inferior-gruesa">Temas</h2>
+<div id="forum-topic-list" class="lista-sin-marcadores">
+  <ul>
+    <?php foreach ($topics as $topic): ?>
+    <li>
+      <h2 class="sin-margen-superior"><?php print $topic->title; ?></h2>
+    </li>
+    <?php endforeach; ?>
+  </ul>
+</div>
+
 
 <?php print $pager; ?>
 

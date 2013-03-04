@@ -2,7 +2,7 @@
 name = Daetsam Inteligencia Colectiva
 description = Tema para los foros de daetsam
 version = 2.x
-base style = Naked
+; base style = naked
 
 ; Information added by drupal.org packaging script on 2012-03-19
 

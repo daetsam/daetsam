@@ -14,11 +14,19 @@
  * @ingroup views_templates
  */
 ?>
- <div id="forum-topic-list">
-  <?php if (!empty($title)) : ?>
-    <caption><?php print $title; ?></caption>
-  <?php endif; ?>
+<div id="forum-topic-list" class="lista-sin-marcadores">
+<ul>
+  <?php foreach ($rows as $count => $row): ?>
+  <li>
+    <?php print_r($row); ?>
+    <h2 class="sin-margen-superior"><?php $row['title']; ?></h2>
+  </li>
+  <?php endforeach; ?>
+</ul>
+</div>
 
+
+ <div id="forum-topic-list">
   <table class="forum-table forum-table-topics <?php print $classes; ?>">
     <thead>
       <tr>

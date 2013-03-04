@@ -58,106 +58,17 @@
 </div>
 <?php endforeach; ?>
 
-<?php foreach ($tables as $table_id => $table): ?>
-  <?php $table_info = $table['table_info']; ?>
 
-  <div class="forum-table-wrap">
-    <div class="forum-table-superheader">
-      <div class="forum-table-name">
-        <?php if (empty($table_info->link)): ?>
-          <?php print $table_info->name; ?>
-        <?php else: ?>
-          <a href="<?php print $table_info->link; ?>"><?php print $table_info->name; ?></a>
-        <?php endif; ?>
-      </div>
-      <?php if ($collapsible): ?>
-        <span id="forum-collapsible-<?php print $table_info->tid; ?>" class="forum-collapsible" >&nbsp;</span>
-      <?php endif; ?>
-      <div class="forum-table-description"><?php print $table_info->description; ?></div>
 
-    </div>
-    <div id="forum-table-<?php print $table_info->tid; ?>">
-      <table class="forum-table forum-table-forums">
-        <thead class="forum-header">
-          <tr>
-            <th class="forum-icon">&nbsp;</th>
-            <th class="forum-name"><?php print t('Forum'); ?></th>
-            <th class="forum-topics"><?php print t('Topics'); ?></th>
-            <th class="forum-posts"><?php print t('Posts'); ?></th>
-            <th class="forum-last-post"><?php print t('Last post'); ?></th>
-          </tr>
-        </thead>
 
-        <tbody id="forum-table-<?php print $table_info->tid; ?>-content">
-          <?php foreach ($table['items'] as $item_id => $item): ?>
-            <?php if ($item->is_container): ?>
-              <tr id="subcontainer-<?php print $item_id; ?>" class="forum-row <?php print $item->zebra; ?> container-<?php print $item_id; ?>-child">
-              <?php else: ?>
-              <tr id="forum-<?php print $item_id; ?>" class="forum-row <?php print $item->zebra; ?> container-<?php print $item_id; ?>-child">
-              <?php endif; ?>
+<!--- legacy ----->
 
-              <?php if (!empty($item->forum_image)): ?>
-                <td class="forum-image forum-image-<?php print $item_id; ?>">
-                  <?php print $item->forum_image; ?>
-                </td>
-              <?php else: ?>
-                <td class="<?php print $item->icon_classes ?>">
-                  <span class="forum-list-icon-wrapper"><span><?php print $item->icon_text ?></span></span>
-                </td>
-              <?php endif; ?>
-
-              <?php $colspan = ($item->is_container) ? 4 : 1 ?>
-              <td class="forum-details" colspan="<?php print $colspan ?>">
-                <div class="forum-name">
-                  <a href="<?php print $item->link; ?>"><?php print $item->name; ?></a>
-                </div>
-                <?php if (!empty($item->description)): ?>
-                  <div class="forum-description">
-                    <?php print $item->description; ?>
-                  </div>
-                <?php endif; ?>
-
-                <?php if (!empty($item->subcontainers)): ?>
-                  <div class="forum-subcontainers">
-                    <span class="forum-subcontainers-label"><?php print t("Subcontainers") ?>:</span> <?php print $item->subcontainers; ?>
-                  </div>
-                <?php endif; ?>
-
-                <?php if (!empty($item->subforums)): ?>
-                  <div class="forum-subforums">
-                    <span class="forum-subforums-label"><?php print t("Subforums") ?>:</span> <?php print $item->subforums; ?>
-                  </div>
-                <?php endif; ?>
-              </td>
-              <?php if (!$item->is_container): ?>
-                <td class="forum-number-topics">
-                  <div class="forum-number-topics"><?php print $item->total_topics ?>
-                    <?php if ($item->new_topics): ?>
-                      <div class="forum-number-new-topics">
-                        <a href="<?php print $item->new_topics_link; ?>"><?php print $item->new_topics_text; ?></a>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                </td>
-
-                <td class="forum-number-posts">
-                  <?php print $item->total_posts ?>
-
-                  <?php if ($item->new_posts): ?>
-                    <br />
-                    <a href="<?php print $item->new_posts_link; ?>"><?php print $item->new_posts_text; ?></a>
-                  <?php endif; ?>
-                </td>
-                <td class="forum-last-reply">
-                  <?php print $item->last_post ?>
-                </td>
-              <?php endif; ?>
-
-            </tr>
-
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
-<?php endforeach; ?>
+<?php if (!empty($item->forum_image)): ?>
+  <td class="forum-image forum-image-<?php print $item_id; ?>">
+	<?php print $item->forum_image; ?>
+  </td>
+<?php else: ?>
+  <td class="<?php print $item->icon_classes ?>">
+	<span class="forum-list-icon-wrapper"><span><?php print $item->icon_text ?></span></span>
+  </td>
+<?php endif; ?>

@@ -30,6 +30,16 @@
  */
 ?>
 <h2 class="block-title linea-inferior-gruesa">Temas</h2>
+<?php
+if ($rows) {
+  print $rows;
+} elseif ($empty) {
+  print $empty;
+}
+?>
+
+
+
 <div class="<?php print $classes; ?>">
   <?php if (!empty($admin_links)): ?>
     <div class="views-admin-links views-hide">
