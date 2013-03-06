@@ -14,54 +14,17 @@
  * @ingroup views_templates
  */
 ?>
-<div id="forum-topic-list" class="lista-sin-marcadores">
+<div class="lista-sin-marcadores linea-inferior-gruesa">
 <ul>
   <?php foreach ($rows as $count => $row): ?>
-  <li>
-    <?php print_r($row); ?>
-    <h2 class="sin-margen-superior"><?php $row['title']; ?></h2>
+  <li class="linea-inferior-fina <?php print $row['topic_icon']; ?>">
+    <h2 class="sin-margen-superior"><?php print $row['title']; ?></h2>
+    <div class="clearfix">
+      <div class="grid-2 alpha">Creado por <?php print $row['name_1']; ?></div>
+      <div class="grid-2"><?php print $row['comment_count']; ?> respuestas</div>
+      <div class="grid-3 omega">Último post: <?php print $row['last_updated']; ?></div>
+    </div>
   </li>
   <?php endforeach; ?>
 </ul>
-</div>
-
-
- <div id="forum-topic-list">
-  <table class="forum-table forum-table-topics <?php print $classes; ?>">
-    <thead>
-      <tr>
-        <?php foreach ($header as $field => $label): ?>
-          <th class="views-field views-field-<?php print $fields[$field]; ?>">
-            <?php print $label; ?>
-          </th>
-        <?php endforeach; ?>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($rows as $count => $row): ?>
-        <tr class="<?php print implode(' ', $row_classes[$count]); ?>">
-          <?php if (empty($shadow[$count])): ?>
-            <?php foreach ($row as $field => $content): ?>
-              <?php /* To add popup from teaser in the title of the td, add: title="<?php print $teasers[$count] ?>"*/ ?>
-              <td class="views-field views-field-<?php print $fields[$field]; ?>">
-               <?php /* Extra label for stickies. */ ?>
-               <?php if ($field == 'title' && !empty($sticky[$count])): ?>
-                 <span class="sticky-label"><?php print t('Sticky:'); ?></span>
-               <?php endif; ?>
-               <?php print $content; ?>
-              </td>
-            <?php endforeach; ?>
-          <?php else: ?> 
-            <?php /* For shadow posts, we print only the icon and themed notice. */ ?>
-            <td class="views-field views-field-<?php print $fields['topic_icon']; ?>">
-              <?php print $row['topic_icon']; ?>
-            </td>
-            <td class="views-field views-field-<?php print $fields['title']; ?>" colspan="<?php print count($header)-1; ?>">
-               <?php print $shadow[$count]; ?>
-            </td>
-          <?php endif; ?>
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
 </div>

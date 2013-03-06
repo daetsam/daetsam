@@ -30,16 +30,6 @@
  */
 ?>
 <h2 class="block-title linea-inferior-gruesa">Temas</h2>
-<?php
-if ($rows) {
-  print $rows;
-} elseif ($empty) {
-  print $empty;
-}
-?>
-
-
-
 <div class="<?php print $classes; ?>">
   <?php if (!empty($admin_links)): ?>
     <div class="views-admin-links views-hide">
@@ -65,10 +55,6 @@ if ($rows) {
     </div>
   <?php endif; ?>
 
-  <?php if ($node_create_list): ?>
-    <div class="forum-node-create-links forum-node-create-links-top"><?php print $node_create_list ?></div>
-  <?php endif; ?>
-
   <?php if ($pager): ?>
     <div class="forum-pager" id="forum-pager-top"><?php print $pager; ?></div>
   <?php endif; ?>
@@ -83,20 +69,18 @@ if ($rows) {
     </div>
   <?php endif; ?>
 
-  <div class="forum-node-create-links"><?php print $node_create_list ?></div>
 
   <?php if ($pager): ?>
     <div class="forum-pager" id="forum-pager-bottom"><?php print $pager; ?></div>
-  <?php endif; ?>
-
-  <?php if (!empty($view->sort_form)): ?>
-    <div id="forum-sort"><?php print advanced_forum_forum_topic_list_sort(); ?></div>
   <?php endif; ?>
 
   <?php if (!empty($forum_tools)): ?>
     <div class="forum-tools"><?php print $forum_tools; ?></div>
   <?php endif; ?>
 
+  <?php if ($node_create_list): ?>
+    <div class="forum-node-create-links forum-node-create-links-top"><?php print $node_create_list ?></div>
+  <?php endif; ?>
 
   <?php if ($attachment_after): ?>
     <div class="attachment attachment-after">

@@ -9,5 +9,5 @@
  */
 ?>
 <?php if (!empty($pages)): ?>
-  <span class="topic-pager">(Page: <?php print implode(", ", $pages) . $last_page_text; ?>)</span>
+  <span class="topic-pager">(Página: <?php print implode(", ", $pages) . $last_page_text; ?>)</span>
 <?php endif; ?>

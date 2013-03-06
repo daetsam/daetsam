@@ -46,7 +46,7 @@
 <?php foreach ($tables as $table_id => $table): ?>
 <?php $table_info = $table['table_info']; ?>
 <h2 class="block-title linea-inferior-gruesa">Subforos</h2>
-<div class="lista-sin-marcadores">
+<div class="lista-sin-marcadores linea-inferior-gruesa">
   <ul>
   <?php foreach ($table['items'] as $item_id => $item): ?>
     <li class="linea-inferior-fina">
@@ -57,18 +57,3 @@
   </ul>
 </div>
 <?php endforeach; ?>
-
-
-
-
-<!--- legacy ----->
-
-<?php if (!empty($item->forum_image)): ?>
-  <td class="forum-image forum-image-<?php print $item_id; ?>">
-	<?php print $item->forum_image; ?>
-  </td>
-<?php else: ?>
-  <td class="<?php print $item->icon_classes ?>">
-	<span class="forum-list-icon-wrapper"><span><?php print $item->icon_text ?></span></span>
-  </td>
-<?php endif; ?>

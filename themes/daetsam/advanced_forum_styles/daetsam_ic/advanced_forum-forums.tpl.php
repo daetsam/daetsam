@@ -31,9 +31,9 @@
   <?php print $forums; ?>
   </div>
     
-  <?php if (!empty($forum_tools)): ?>
+  <!--<?php if (!empty($forum_tools)): ?>
     <div class="forum-tools"><?php print $forum_tools; ?></div>
-  <?php endif; ?>
+  <?php endif; ?>-->
   
   <div class="grid-7 omega">
   <?php print $topics; ?>
