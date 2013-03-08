@@ -696,6 +696,14 @@ div.read-more {
   height: 3px;
 }
 
+
+.nube-de-tags {
+  text-align:justify;
+}
+.nube-de-tags li {
+  display:inline-block;
+}
+
 /* ----------------------------------------------------------------------
    Región 'Content'
    ---------------------------------------------------------------------- */
