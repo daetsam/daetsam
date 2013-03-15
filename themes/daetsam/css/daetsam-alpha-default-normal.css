@@ -112,6 +112,10 @@ img.logos-redes-sociales {
   padding-bottom: .030612em; /* = 3px */
 }
 
+.block-img-icons img {
+  height: 83px;
+}
+
 
 /* ######################################################################
    Secci—n 'Content'

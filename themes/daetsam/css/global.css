@@ -547,9 +547,6 @@ img.logos-redes-sociales {
   width:auto;
 }
 
-.block-imageblock-5,
-.block-imageblock-4,
-.block-imageblock-3, /* Bloque de imagen icono Servicios */
 .block-imageblock-8, /* Bloque de imagen icono Foros */
 .block-imageblock-9, /* Bloque de imagen icono Noticias */
 .block-imageblock-12 /* Bloque de imagen logo 255 */ {
@@ -558,8 +555,8 @@ img.logos-redes-sociales {
   margin-left:1.5em;
 }
 
-.block-iconologos img {
-  height:125px;
+.block-img-icons img {
+  height: 44px;
 }
 
 .block-16, /* Bloque de cabecera '255' */
