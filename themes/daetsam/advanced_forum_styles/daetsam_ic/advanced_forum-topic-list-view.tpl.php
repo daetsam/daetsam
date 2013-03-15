@@ -19,7 +19,7 @@
   <?php foreach ($rows as $count => $row): ?>
   <li class="linea-inferior-fina <?php print $row['topic_icon']; ?>">
     <h2 class="sin-margen-superior"><?php print $row['title']; ?></h2>
-    <div class="clearfix">
+    <div class="clearfix con-margen-inferior">
       <div class="grid-2 alpha">Creado por <?php print $row['name_1']; ?></div>
       <div class="grid-2"><?php print $row['comment_count']; ?> respuestas</div>
       <div class="grid-3 omega">Último post: <?php print $row['last_updated']; ?></div>

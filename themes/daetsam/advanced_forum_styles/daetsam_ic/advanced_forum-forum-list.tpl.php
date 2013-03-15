@@ -45,7 +45,7 @@
 ?>
 <?php foreach ($tables as $table_id => $table): ?>
 <?php $table_info = $table['table_info']; ?>
-<h2 class="block-title linea-inferior-gruesa">Subforos</h2>
+<h2 class="block-title linea-inferior-gruesa">Categorías</h2>
 <div class="lista-sin-marcadores linea-inferior-gruesa">
   <ul>
   <?php foreach ($table['items'] as $item_id => $item): ?>

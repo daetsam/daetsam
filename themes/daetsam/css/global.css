@@ -731,6 +731,10 @@ div.read-more {
 .con-margen-superior {
 }
 
+.con-margen-inferior {
+  margin:1em;
+}
+
 #forum {
   margin-top:5em;
 }
