@@ -556,7 +556,7 @@ img.logos-redes-sociales {
 }
 
 .block-img-icons img {
-  height: 44px;
+  max-height: 44px;
 }
 
 .block-16, /* Bloque de cabecera '255' */
@@ -729,6 +729,10 @@ div.read-more {
 }
 
 .con-margen-superior {
+}
+
+#forum {
+  margin-top:5em;
 }
 
 @media all and (max-width:730px) {

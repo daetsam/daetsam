@@ -113,7 +113,7 @@ img.logos-redes-sociales {
 }
 
 .block-img-icons img {
-  height: 83px;
+  max-height: 83px;
 }
 
 
