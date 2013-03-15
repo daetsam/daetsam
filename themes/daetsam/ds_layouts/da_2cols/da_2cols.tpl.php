@@ -15,5 +15,14 @@
       <?php print $right; ?>
     </div>
   <?php endif; ?>
+</div>
+<div class="clearfix">
+  <div class="<?php print $footer_classes; ?>">
+    <?php print $footer; ?>
+  </div>
   
 </div>
+
+<?php if (!empty($drupal_render_children)): ?>
+  <?php print $drupal_render_children ?>
+<?php endif; ?>
