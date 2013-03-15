@@ -27,15 +27,20 @@
 <?php if ($forums_defined): ?>
 <p><?php print $forum_description; ?> </p>
 <div id="forum">
-  <div class="grid-5 alpha">
-  <?php print $forums; ?>
+  <div class="grid-4 alpha">
+    <?php if (!empty($forums)):?>
+    <?php print $forums; ?>
+    <?php else: ?>
+    <h2 class="block-title linea-inferior-gruesa">Categorías</h2>
+    <p>No hay subcategorías.</p>
+    <?php endif; ?>
   </div>
     
   <!--<?php if (!empty($forum_tools)): ?>
     <div class="forum-tools"><?php print $forum_tools; ?></div>
   <?php endif; ?>-->
   
-  <div class="grid-7 omega">
+  <div class="grid-6 omega">
   <?php print $topics; ?>
   </div>
 </div>

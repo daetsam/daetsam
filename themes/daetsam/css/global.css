@@ -738,6 +738,9 @@ div.read-more {
 #forum {
   margin-top:5em;
 }
+.forum-post {
+  padding-top:2em;
+}
 
 @media all and (max-width:730px) {
 .reg-content .grid-1,
