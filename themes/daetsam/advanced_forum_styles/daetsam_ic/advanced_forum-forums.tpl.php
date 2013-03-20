@@ -27,7 +27,7 @@
 <?php if ($forums_defined): ?>
 <p><?php print $forum_description; ?> </p>
 <div id="forum">
-  <div class="grid-4 alpha">
+  <div class="grid-3 alpha">
     <?php if (!empty($forums)):?>
     <?php print $forums; ?>
     <?php else: ?>

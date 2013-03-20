@@ -50,7 +50,7 @@
   <ul>
   <?php foreach ($table['items'] as $item_id => $item): ?>
     <li class="linea-inferior-fina">
-      <h2 class="sin-margen-superior"><a href="<?php print $item->link; ?>"><?php print $item->name; ?></a></h2>
+      <h3 class="sin-margen-superior"><a href="<?php print $item->link; ?>"><?php print $item->name; ?></a></h3>
       <p><?php if (!empty($item->description)): ?><?php print $item->description; ?><?php endif; ?></p>
     </li>
   <?php endforeach; ?>
