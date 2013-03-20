@@ -9,35 +9,35 @@
    ====================================================================== */
 
 h1 {
-  font-size: 1.15384em; /* = 15px */
+  font-size: 1.333em; /* = 16px */
 }
 
 h2 {
-  font-size: 1.0769em; /* = 14px */
+  font-size: 1.333em; /* = 16px */
 }
 
 h2.block-title {
-  font-size: 1.0769em; /* = 14px */
+  font-size: 1.333em; /* = 14px */
 }
 
 h2.node-title {
-  font-size: 1.0769em; /* = 14px */
+  font-size: 1.333em; /* = 14px */
 }
 
 h3 {
-  font-size: 1.0769em; /* = 14px */
+  font-size: 1.250em; /* = 14px */
 }
 
 h4 {
-  font-size: 1.0769em; /* = 14px */
+  font-size: 1.250em; /* = 14px */
 }
 
 h5 {
-  font-size: 1em; /* = 13px */
+  font-size: 1.083em; /* = 13px */
 }
 
 h6 {
-  font-size: 1em; /* = 13px */
+  font-size: 1.083em; /* = 13px */
 }
 
 /* ######################################################################

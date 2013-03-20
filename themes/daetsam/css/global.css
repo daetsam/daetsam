@@ -26,7 +26,7 @@ pre,
 table,
 address,
 fieldset {
-  margin-bottom: .5em;
+  margin-bottom: .4em;
 }
 
 a:link, a:visited {
@@ -58,15 +58,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 1.167em; /* = 14px */
+  font-size: 1.333em;; /* = 14px */
 }
 
 h2 {
-  font-size: 1.083em; /* = 13px */
+  font-size: 1.333em;; /* = 13px */
   color: #333;
   font-weight: normal;
   text-transform: uppercase;
-  margin-top: 2em;
+  margin-top: 1.2em;
 }
 
 h2.block-title {
@@ -83,29 +83,31 @@ h2.node-title {
 }
 
 h3 {
-  font-size: 1.083em; /* = 13px */
-  color: #666;
+  font-size: 1.250em; /* = 13px */
   margin-top: 1em;
+  font-weight:normal;
 }
 
 h4 {
-  font-size: 1.083em; /* = 13px */
-  color: #999;
+  font-size: 1.250em; /* = 13px */
   margin-top: 1em;
+  font-weight:normal;
+  color:#666;
 }
 
 h5 {
-  font-size: 1em; /* = 12px */
-  font-weight: normal;
+  font-size: 1.083em; /* = 12px */
+  font-weight: bold;
   text-transform: uppercase;
   margin-top: 1em;
+  color:#666;
 }
 
 h6 {
-  font-size: 1em; /* = 12px */
-  font-weight: normal;
+  color:#666;
+  font-size: 1.083em; /* = 12px */
+  font-weight: bold;
   text-transform: uppercase;
-  color: #666;
   margin-top: 1em;
 }
 
@@ -421,6 +423,7 @@ body .reg-menu li { /* Ajusta la separación entre los elementos de menú */
 body .reg-menu h2.block-title { /* Ajusta la separación entre los elementos de menú y el título */
   line-height: 1;
   padding-bottom: .25em; /* = 3px */
+  font-size:1.0769em;
 }
 
 /* ----------------------------------------------------------------------
