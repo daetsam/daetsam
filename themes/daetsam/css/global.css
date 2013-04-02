@@ -589,8 +589,7 @@ img.logos-redes-sociales {
 }
 
 .reg-header-top h1 .mayuscula-acento { /* Cambia el texto a versalitas (para usarlo en las vocales con acento en los títulos grandes de los apartados) */
-  text-transform: none;
-  font-variant: small-caps;
+  font-size: 81%;
 }
 
 /* ----------------------------------------------------------------------
