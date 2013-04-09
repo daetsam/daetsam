@@ -375,12 +375,34 @@ img {
 /* ----------------------------------------------------------------------
    Regiones 'Menu 1', 'Menu 2', 'Menu 3', 'Menu 4'
    ---------------------------------------------------------------------- */
-@media all and (min-width: 740px) and (min-device-width: 740px) {
-.reg-menu-salto-linea h2.block-title { /* Fuerza el salto de línea en títulos de menú largos */
-  width: 60%;
-  margin-left: 40%;
+.reg-menu {
+  display:block;
+}
+@media all and (min-width: 240px) and (min-device-width: 240px) {
+.reg-menu {
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  display:inline;
+  float:left;
+  
+  margin:0;
+  padding:0 10px;
+  width:50%;
+  height:12em;
+  border-bottom: 1px dotted #ccc;
+}
+.reg-search-bar {
+  display:block;
+  clear:both;
 }
 }
+@media all and (min-width:480px) and (min-device-width: 480px) {
+.reg-menu {
+  width:25%;
+}
+}
+
 .reg-menu,
 .reg-menu h2.block-title { /* Convierte el texto de los elementos y títulos de menú a minúsculas */
   text-transform: lowercase;
@@ -472,7 +494,8 @@ img.logos-redes-sociales {
   margin: 0;
 }
 
-.reg-search-bar .block-45 {
+.reg-search-bar .block-45,
+.reg-search-bar .block-50 {
   text-transform:lowercase;
   font-weight:bold;
   padding-top:6px;
@@ -738,6 +761,27 @@ div.read-more {
   margin-left:0;
   margin-right:0;
 }
+}
+.widget-container {
+  text-align:justify;
+}
+.widget {
+  min-width:90px;
+  width:24%;
+  display:inline-block;
+  vertical-align:top;
+  text-align:left;
+}
+.widget-ic {
+}
+.widget-ic ul {
+  list-style:none;
+}
+.widget-ic li {
+  padding:5px 12px;
+}
+.widget-ic a {
+  color:#FFF;
 }
 /* ----------------------------------------------------------------------
    Región 'Content' - estilos específicos para págians concretas
