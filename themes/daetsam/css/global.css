@@ -326,6 +326,7 @@ textarea:active {
 
 img {
   max-width:100%;
+  height:auto;
 }
 
 .video-container {
