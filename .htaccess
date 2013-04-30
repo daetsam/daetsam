@@ -1,0 +1,11 @@
+Options +Indexes
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteRule ^doscincocinco/(.*)$ http://daetsam.es/doscincocinco/$1
+
+########################################################
+#   REDIRECTOR DE LA NUEVA WEB
+########################################################
+
+RewriteRule ^(.*)$ http://daetsam.aq.upm.es/$1 [R=301]
