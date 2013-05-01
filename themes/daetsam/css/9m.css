@@ -1,0 +1,670 @@
+/* This file will hold styles for the mobile version of your website (mobile first). */
+/* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
+
+
+/* ######################################################################
+   General
+   ###################################################################### */
+
+/* ======================================================================
+   Texto
+   (Sobreescribe algunos estilos de 'omega/omega/css/omega-text.css' y
+   añade otros nuevos)
+   ====================================================================== */
+
+body {
+  background:#0B6;
+  color:#FFF;
+}
+
+p,
+dl,
+hr,
+h1, h2, h3, h4, h5, h6,
+ol, ul,
+pre,
+table,
+address,
+fieldset {
+}
+
+a:link, a:visited {
+  color: #a3dfbd;
+}
+
+a:hover {
+  color: #FFF;
+}
+
+.node-title a:link,
+.node-title a:visited {
+  color: #FFF;
+}
+
+.node-title a:hover {
+  color: #a3dfbd;
+}
+
+hr {
+  background: #FFF;
+}
+
+h1, h2, h3, h4, h5, h6 {
+}
+
+h1 {
+  color:#FFF;
+}
+
+h2 {
+  color: #a3dfbd;
+}
+
+h2.block-title {
+  font-weight: bold;
+  margin-top: 0;
+}
+
+h2.node-title {
+  color: #FFF;
+}
+
+h3 {
+}
+
+h4 {
+  color:#a3dfbd;
+}
+
+h5 {
+  color:#a3dfbd;
+}
+
+h6 {
+  color:#a3dfbd;
+}
+
+dl dt {
+  color: #a3dfbd;
+}
+
+dd {
+}
+
+dfn, cite, em, i {
+}
+
+em em, cite cite {
+}
+
+abbr {
+}
+
+abbr:hover {
+  color: #a3dfbd;
+}
+
+thead th, th {
+}
+
+blockquote {
+}
+
+var {
+}
+
+ins {
+}
+
+mark {
+}
+
+sup,
+sub {
+}
+
+sup {
+}
+
+sub {
+}
+
+pre {
+}
+
+pre, code, kbd, tt, var, samp {
+}
+
+pre code {
+}
+
+code {
+}
+
+footer.submitted {
+}
+
+.lista-sin-marcadores,
+.lista-sin-marcadores ul,
+.lista-sin-marcadores ol { /* Hace que no aparezcan los marcadores de los elementos de las listas con esta clase */
+}
+
+ul.lista-horizontal li,
+ol.lista-horizontal li { /* Hace que los elementos de una lista se pongan uno a continuación del otro en horizontal */
+}
+
+/* ======================================================================
+   Botones, áreas de texto, introducción de datos, etc.
+   (Sobreescribe 'omega/omega/css/formalize.css')
+   ====================================================================== */
+
+button,
+input[type="reset"],
+input[type="submit"],
+input[type="button"] {
+  background: transparent;
+}
+
+button:hover,
+input[type="reset"]:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover { /* Estilo añadido para cambiar de color al pasar el puntero por encima */
+  color: #a3dfbd;
+}
+
+textarea,
+select,
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"] {
+  border-color: #a3dfbd;
+}
+
+button:focus,
+button:active,
+input:focus,
+input:active,
+select:focus,
+select:active,
+textarea:focus,
+textarea:active {
+  -moz-box-shadow: #a3dfbd 0 0 7px;
+  -webkit-box-shadow: #a3dfbd 0 0 7px;
+  box-shadow: #a3dfbd 0 0 7px;
+}
+
+/* ======================================================================
+   Botones en nodos y comentarios
+   (Sobreescribe 'omega/omega/css/omega-visuals.css')
+   ====================================================================== */
+
+.node-links ul li a,
+.comment-links ul li a {
+  background: transparent;
+}
+
+.node-links ul li a:hover,
+.comment-links ul li a:hover {
+  color: #a3dfbd;
+}
+
+/* ======================================================================
+   Imágenes y clases específicas como item-list
+   (Sobreescribe 'omega/alpha/css/alpha-alpha.css')
+   ====================================================================== */
+
+img {
+}
+
+.video-container {
+}
+.video-container iframe {
+}
+
+.item-list ul li {
+}
+
+.region {
+}
+
+/* ######################################################################
+   Sección 'Header'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Menu'
+   ====================================================================== */
+
+/* ----------------------------------------------------------------------
+   Región 'Logo'
+   ---------------------------------------------------------------------- */
+
+.reg-logo div.block-image {
+}
+
+.reg-logo img {
+}
+
+/* ----------------------------------------------------------------------
+   Regiones 'Menu 1', 'Menu 2', 'Menu 3', 'Menu 4'
+   ---------------------------------------------------------------------- */
+.reg-menu {
+  display:block;
+}
+@media all and (min-width: 240px) and (min-device-width: 240px) {
+.reg-menu {
+  border-bottom: 1px dotted #a3dfbd;
+}
+.reg-search-bar {
+}
+}
+@media all and (min-width:480px) and (min-device-width: 480px) {
+.reg-menu {
+}
+}
+
+.reg-menu,
+.reg-menu h2.block-title { /* Convierte el texto de los elementos y títulos de menú a minúsculas */
+}
+
+.reg-menu h2 { /* Convierte el texto de los títulos de menú a negrita y al mismo tamaño de letra que los elementos */
+  color: #FFF;
+}
+
+.reg-menu a:link,
+.reg-menu a:visited {
+  color: #000;
+}
+
+.reg-menu a:hover {
+  color: #a3dfbd;
+}
+
+.reg-menu .active-trail a {
+}
+
+.reg-menu-separador { /* Añade una línea de separación entre menús en la versión móvil */
+  border-bottom: 1px dotted #a3dfbd;
+}
+
+.reg-menu .nolink { /* Cambia a gris el color de los elementos de menú sin enlace */
+  color: #090;
+}
+
+body .reg-menu li { /* Ajusta la separación entre los elementos de menú */
+}
+
+body .reg-menu h2.block-title { /* Ajusta la separación entre los elementos de menú y el título */
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Search Bar'
+   ---------------------------------------------------------------------- */
+
+.reg-search-bar {
+}
+
+.redes-sociales {
+}
+.redes-sociales a {
+}
+.redes-sociales a:first-child {
+}
+
+img.logos-redes-sociales {
+}
+
+.reg-search-bar input[type="text"] {
+}
+
+.reg-search-bar .clearfix:after { /* Para poder poner la barra de búsqueda en la misma línea que los enlaces de redes sociales */
+}
+
+.reg-search-bar p {
+}
+
+.reg-search-bar form {
+}
+
+.reg-search-bar .block-45,
+.reg-search-bar .block-50 {
+}
+
+/* ======================================================================
+   Zona 'Menu Bottom'
+   ====================================================================== */
+
+.zon-menu-bottom {
+}
+
+.zon-menu-bottom hr {
+  background-color: #FFF;
+}
+
+.zon-menu-bottom p {
+}
+
+.zon-menu-bottom a:link,
+.zon-menu-bottom a:visited {
+  color: #FFF;
+}
+
+.zon-menu-bottom a:hover {
+  color: #a3dfbd;
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Menu Bottom Top'
+   ---------------------------------------------------------------------- */
+
+.reg-menu-bottom-top hr { /* Oculta la línea superior de la franja */
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Menu Bottom Second'
+   ---------------------------------------------------------------------- */
+
+.reg-menu-bottom-second {
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Menu Bottom Bottom'
+   ---------------------------------------------------------------------- */
+
+.reg-menu-bottom-bottom {
+}
+
+/* ======================================================================
+   Zona 'Header'
+   ====================================================================== */
+
+.zon-header {
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Header Top'
+   ---------------------------------------------------------------------- */
+
+.reg-header-top {
+}
+
+.block-img-icons { /* Hace que los bloques de imágenes con esta clase se muestren en una sola línea cuando son incluidos en cabeceras */
+}
+
+.block-img-icons img {
+}
+
+.block-header-with-img { /* Hace que los bloques de títulos de cabeceras con esta clase se muestren en una sola línea cuando las cabeceras también incluyen bloques de imágenes */
+}
+
+.reg-header-top .block-image {
+}
+
+.reg-header-top h1 {
+}
+
+.reg-header-top h1 a {
+  color:#FFF;
+}
+
+.reg-header-top h1 a:hover {
+  color:#FFF;
+}
+
+.reg-header-top h1 .mayuscula-acento { /* Cambia el texto a versalitas (para usarlo en las vocales con acento en los títulos grandes de los apartados) */
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Header Icon'
+   ---------------------------------------------------------------------- */
+.reg-header-icon {
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Header Bottom'
+   ---------------------------------------------------------------------- */
+
+.reg-header-bottom hr {
+  background-color: #FFF;
+}
+
+
+/* ######################################################################
+   Sección 'Content'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Content'
+   ====================================================================== */
+
+.zon-content {
+  margin-top: .25em; /* = 3px */
+}
+
+.zon-content .content {
+  margin-bottom: .5em; /* = 6px */
+}
+
+.zon-content h1 {
+  text-transform:uppercase;
+}
+
+.alpha { /* Permite que los elementos de una vista organizados en columnas de rejilla puedan colocarse ocupando todas las columnas (módulo Views Column Class) */
+  clear: left;
+}
+
+li.alpha { /* Evita que aparezcan botones de lista en las vistas, en la versión móvil */
+  list-style: none;
+}
+
+div.read-more {
+  margin-bottom:.5em;
+}
+
+
+/* ----------------------------------------------------------------------
+   Región 'Sidebar First'
+   ---------------------------------------------------------------------- */
+
+.reg-sidebar-first-submenu { /* Convierte el texto de los elementos de submenú a mayúsculas */
+}
+
+.reg-sidebar-first-submenu li { /* Ajusta la separación entre los elementos de submenú */
+}
+
+.reg-sidebar-first-submenu a:link,
+.reg-sidebar-first-submenu a:visited {
+  color: #FFF;
+}
+
+.reg-sidebar-first-submenu a:hover {
+  color: #a3dfbd;
+}
+
+.reg-sidebar-first-submenu .active-trail a {
+}
+
+.reg-sidebar-first-submenu .nolink { /* Cambia a gris el color de los elementos de submenú sin enlace */
+  color: #090;
+}
+
+.reg-sidebar-first-submenu hr {
+  background-color: #FFF;
+}
+
+
+.nube-de-tags {
+}
+.nube-de-tags li {
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Content'
+   ---------------------------------------------------------------------- */
+.linea-inferior-gruesa {
+  border-bottom:#FFF 3px solid;
+}
+
+.sin-margen-superior {
+}
+
+.linea-inferior-fina {
+  border-bottom:#FFF 1px solid;
+}
+
+.con-margen-superior {
+}
+
+.con-margen-inferior {
+}
+
+#forum {
+}
+.forum-post {
+}
+
+@media all and (max-width:730px) {
+.reg-content .grid-1,
+.reg-content .grid-2,
+.reg-content .grid-3,
+.reg-content .grid-4,
+.reg-content .grid-5,
+.reg-content .grid-6,
+.reg-content .grid-7,
+.reg-content .grid-8,
+.reg-content .grid-9,
+.reg-content .grid-10,
+.reg-content .grid-11,
+.reg-content .grid-12 {
+}
+}
+.widget-container {
+}
+.widget {
+}
+.widget-ic {
+}
+.widget-ic ul {
+}
+.widget-ic li {
+}
+.widget-ic a {
+  color:#FFF;
+}
+/* ----------------------------------------------------------------------
+   Región 'Content' - estilos específicos para págians concretas
+   ---------------------------------------------------------------------- */
+/*
+
+	Texto pequeño
+
+*/
+.small-text {
+}
+.big-text {
+}
+
+
+/*
+   Estilos para el plugin 'daetsam-slider'
+   Muestra contenido como una galería de imágenes.
+*/
+.daetsam-slider {
+  margin:10px 0;
+}
+.daetsam-slider ul {
+  list-style:none;
+  padding:0;
+  margin:0 0 10px 0;
+  position:relative;
+}
+.daetsam-slider li {
+}
+.daetsam-slider li.changing {
+}
+
+.daetsam-slider ul.bullet-list {
+}
+.daetsam-slider ul.bullet-list li {
+}
+.daetsam-slider ul.bullet-list a {
+  background:#FFF;
+}
+.daetsam-slider ul.bullet-list li.active-trail a,
+.daetsam-slider ul.bullet-list a:hover {
+  background:#a3dfbd;
+}
+
+
+
+/* ######################################################################
+   Sección 'Footer'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Footer'
+   ====================================================================== */
+
+.zon-footer {
+}
+
+.zon-footer p {
+}
+
+.zon-footer a:link,
+.zon-footer a:visited {
+  color: #FFF;
+}
+
+.zon-footer a:hover {
+  color: #a3dfbd;
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Footer Top'
+   ---------------------------------------------------------------------- */
+
+.reg-footer-top hr {
+  border-top: 1px dotted #a3dfbd;
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Footer First'
+   ---------------------------------------------------------------------- */
+
+.reg-footer-first {
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Footer Second'
+   ---------------------------------------------------------------------- */
+
+.reg-footer-second div.block-image {
+}
+
+.reg-footer-second img {
+}
+
+
+
+/* ######################################################################
+   Específico para bloques
+   ###################################################################### */
+
+/* ======================================================================
+   Bloque vista 'asociaciones 1'
+   Bloque vista 'asociaciones 2'
+   ====================================================================== */
+#block-views-asociaciones-block-1 .field-name-field-imagen,
+#block-views-asociaciones-block-2 .field-name-field-imagen {
+}
