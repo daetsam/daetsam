@@ -20,7 +20,7 @@ h2.block-title {
 }
 
 h2.node-title {
-  /* font-size: 1.333em; /* = 14px */
+  font-size: 1.333em; /* = 14px */
 }
 
 h3 {
@@ -169,7 +169,7 @@ img.logos-redes-sociales {
 }
 .linea-inferior-fina {
   margin-bottom:10px;
-  border-bottom:#000 3px solid;
+  border-bottom-width: 3px;
 }
 
 

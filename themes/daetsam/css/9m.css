@@ -57,7 +57,7 @@ h1 {
 }
 
 h2 {
-  color: #a3dfbd;
+  color: #FFf;
 }
 
 h2.block-title {
@@ -283,7 +283,7 @@ img {
 
 .reg-menu a:link,
 .reg-menu a:visited {
-  color: #000;
+  color: #FFF;
 }
 
 .reg-menu a:hover {
