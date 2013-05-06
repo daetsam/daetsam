@@ -55,9 +55,15 @@ zones[menu] = 'Menu'
 zones[menu_bottom] = 'Menu Bottom'
 zones[preface] = 'Preface'
 zones[postscript] = 'Postscript'
+
 css[global.css][name] = 'Your custom global styles'
 css[global.css][description] = 'This file holds all the globally active custom CSS of your theme.'
 css[global.css][options][weight] = '10'
+
+css[9m.css][name] = 'CSS para el movimiento 9M'
+css[9m.css][description] = 'Este tema tiñe de verde todas las páginas de daetsam.es.'
+css[9m.css][options][weight] = '11'
+
 settings[alpha_grid] = 'alpha_default'
 settings[alpha_primary_alpha_default] = 'normal'
 settings[alpha_responsive] = '1'
