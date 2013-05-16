@@ -10,10 +10,10 @@
  */
 function date_ical_requirements($phase) {
   $requirements = array();
-
+  
   // Ensure translations don't break at install time
   $t = get_t();
-
+  
   switch ($phase) {
     case 'runtime':
       if (($library = libraries_detect('iCalcreator')) && !empty($library['installed'])) {
@@ -33,7 +33,7 @@ function date_ical_requirements($phase) {
       }
       break;
   }
-
+  
   return $requirements;
 }
 

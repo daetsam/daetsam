@@ -38,12 +38,17 @@ come back to this page.
 
 HOW TO CREATE AN ICAL FEED
 
-- Go to the Manage Display page for the entity you want to export in an iCal
-  feed. You will see that there is a new view mode for all entities, called
-  'iCal'.
+- Go to the Manage Display page for the content type you want to export in an 
+  iCal feed. On the "Default" tab, check the box for "iCal" in the section 
+  titled "Use custom display settings for the following view modes", then click
+  Save.
+- Click the new "iCal" tab that now appears in the upper-right corner of the
+  Manage Display page for this content type.
 - Set up the iCal view mode to contain whatever should be exported as the
   'Description' field for the iCal feed. You can trim the text to the desired
   size, include additional information from other fields, etc.
+- Do this for each of the content types that you wish to include in your 
+  site's iCal feeds.
 - Create a new View that displays the entities that you want to include in the
   iCal feed.
 - Add a "Feed" to the view. Change the Format to 'iCal Feed'. When you click 

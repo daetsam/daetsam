@@ -28,11 +28,10 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
     // If the user didn't disable the option, change the scheme to webcal:// so
     // that calendar clients can automatically subscribe via the iCal link.
     if (!$this->_get_option('disable_webcal')) {
-      $url = str_replace('http://', 'webcal://', $url);
+      $url = str_replace(array('http://', 'https://'), 'webcal://', $url);
     }
     
-    // Only render the feed icon and header tag if this isn't a Preview on the
-    // View config page.
+    // Render the feed icon and header tag (except during a View Preview).
     if (empty($this->view->live_preview)) {
       $tooltip = t('Add to My Calendar');
       $this->view->feed_icon .= theme('date_ical_icon', array('url' => check_url($url), 'tooltip' => $tooltip));
@@ -85,7 +84,7 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
       $rows[] = $this->row_plugin->render($row);
     }
     unset($this->view->row_index);
-
+    
     // Try to load the iCalcreator library, and check if that worked.
     $library = libraries_load('iCalcreator');
     if (!empty($library['loaded'])) {
@@ -111,7 +110,7 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
       if (!$this->_get_option('no_calname')) {
         $vcalendar->setProperty('x-wr-calname', $cal_name, array('VALUE' => 'TEXT'));
       }
-
+      
       // Now add the VEVENTs.
       $timezones = array();
       foreach ($rows as $row) {
@@ -123,45 +122,55 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
         
         $vevent = $vcalendar->newComponent('vevent');
         // Get the start date as an array.
-        $rendered_date = $row['start']->toArray();
-        if ($row['all_day']) {
-          $rendered_date['hour'] = FALSE;
-          $rendered_date['minute'] = FALSE;
-          $rendered_date['second'] = FALSE;
-        }
+        $start = $row['start']->toArray();
         $timezone = $row['start']->getTimezone()->getName();
         $timezones[$timezone] = $timezone;
-        $vevent->setDtstart(
-          $rendered_date['year'],
-          $rendered_date['month'],
-          $rendered_date['day'],
-          $rendered_date['hour'],
-          $rendered_date['minute'],
-          $rendered_date['second'],
-          $timezone);
-
-        // Keep a copy of the start date, as it's useful later.
-        $rendered_start = $rendered_date + array('tz' => $row['start']->getTimezone());
-
+        
+        if ($row['all_day']) {
+          // All day events need to be specified as DATE, rather than DATE-TIME, or they get interpretted wrong.
+          $vevent->setDtstart($start['year'], $start['month'], $start['day'],
+            FALSE, FALSE, FALSE, FALSE, array('VALUE' => 'DATE'));
+        }
+        else {
+          $vevent->setDtstart(
+            $start['year'],
+            $start['month'],
+            $start['day'],
+            $start['hour'],
+            $start['minute'],
+            $start['second'],
+            $timezone);
+        }
+        
+        // Add the Timezone info to the start date, for use later.
+        $start['tz'] = $row['start']->getTimezone();
+        
         // Only add the end date if there is one.
         if (!empty($row['end'])) {
-          $rendered_date = $row['end']->toArray();
+          $end = $row['end']->toArray();
           $timezone = $row['start']->getTimezone()->getName();
           $timezones[$timezone] = $timezone;
-          $vevent->setDtend(
-            $rendered_date['year'],
-            $rendered_date['month'],
-            $rendered_date['day'],
-            $rendered_date['hour'],
-            $rendered_date['minute'],
-            $rendered_date['second'],
-            $timezone);
-          // Keep a copy of the start date, as it's useful later.
-          $rendered_end = $rendered_date + array('tz' => $row['end']->getTimezone());
+          
+          if ($row['all_day']) {
+            $vevent->setDtend($end['year'], $end['month'], $end['day'],
+              FALSE, FALSE, FALSE, FALSE, array('VALUE' => 'DATE'));
+          }
+          else {
+            $vevent->setDtend(
+              $end['year'],
+              $end['month'],
+              $end['day'],
+              $end['hour'],
+              $end['minute'],
+              $end['second'],
+              $timezone);
+          }
+          // Keep a copy of the end date, as it's useful later.
+          $end['tz'] = $row['end']->getTimezone();
         }
         $vevent->setProperty('uid', $row['uid']);
         $vevent->setProperty('summary', $row['summary']);
-
+        
         // Handle repeating dates from the date_repeat module.
         if (!empty($row['rrule']) && module_exists('date_repeat')) {
           // Split the rrule into the actual rule, exceptions and additions.
@@ -175,17 +184,17 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
             $exdates = array();
             foreach ($exceptions as $exception) {
               $except = date_ical_date($exception, 'UTC');
-              date_timezone_set($except, $rendered_start['tz']);
-              $rendered_date = $except->toArray();
+              date_timezone_set($except, $start['tz']);
+              $exception_array = $except->toArray();
               $exdates[] = array(
-                'year' =>  $rendered_date['year'],
-                'month' => $rendered_date['month'],
-                'day' =>   $rendered_date['day'],
+                'year' =>  $exception_array['year'],
+                'month' => $exception_array['month'],
+                'day' =>   $exception_array['day'],
                 // Use the time information from the start date.
-                'hour' =>   $rendered_start['hour'],
-                'min' =>    $rendered_start['minute'],
-                'second' => $rendered_start['second'],
-                'tz' =>     $rendered_start['tz']->getName(),
+                'hour' =>   $start['hour'],
+                'min' =>    $start['minute'],
+                'second' => $start['second'],
+                'tz' =>     $start['tz']->getName(),
               );
             }
             // Add those exclusions as 'EXDATE's.
@@ -196,34 +205,34 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
             $add_dates = array();
             foreach ($additions as $addition) {
               $add = date_ical_date($addition, 'UTC');
-              date_timezone_set($add, $rendered_start['tz']);
-              $rendered_date = $add->toArray();
-
+              date_timezone_set($add, $start['tz']);
+              $addition_array = $add->toArray();
+              
               $add_date = array(
-                'year' =>  $rendered_date['year'],
-                'month' => $rendered_date['month'],
-                'day' =>   $rendered_date['day'],
+                'year' =>  $addition_array['year'],
+                'month' => $addition_array['month'],
+                'day' =>   $addition_array['day'],
                 // Use the time information from the start date.
-                'hour' =>   $rendered_start['hour'],
-                'min' =>    $rendered_start['minute'],
-                'second' => $rendered_start['second'],
-                'tz' =>     $rendered_start['tz']->getName(),
+                'hour' =>   $start['hour'],
+                'min' =>    $start['minute'],
+                'second' => $start['second'],
+                'tz' =>     $start['tz']->getName(),
               );
               // If there was an end date specified, use that too.
               if (!empty($row['end'])) {
                 $add_date = array($add_date);
                 $add_date[] = array(
-                  'year' =>  $rendered_date['year'],
-                  'month' => $rendered_date['month'],
-                  'day' =>   $rendered_date['day'],
+                  'year' =>  $addition_array['year'],
+                  'month' => $addition_array['month'],
+                  'day' =>   $addition_array['day'],
                   // Use the time information from the end date.
-                  'hour' =>   $rendered_end['hour'],
-                  'min' =>    $rendered_end['minute'],
-                  'second' => $rendered_end['second'],
-                  'tz' =>     $rendered_end['tz']->getName(),
+                  'hour' =>   $end['hour'],
+                  'min' =>    $end['minute'],
+                  'second' => $end['second'],
+                  'tz' =>     $end['tz']->getName(),
                 );
               }
-
+              
               $add_dates[] = $add_date;
             }
             // Add the additions as 'RDATE's.
@@ -255,15 +264,15 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
         // Allow other modules to alter the VEVENT object.
         drupal_alter('date_ical_feed_ical_vevent_render', $vevent, $this->view, $row);
       }
-
+      
       // Now add all the timezones we just used to the calendar.
       foreach ($timezones as $timezone) {
         iCalUtilityFunctions::createTimezone($vcalendar, $timezone);
       }
-
+      
       // Allow other modules to alter the calendar as a whole.
       drupal_alter('date_ical_feed_ical_vcalendar_render', $vcalendar, $this->view);
-
+      
       $output = $vcalendar->createCalendar();
     }
     else {
@@ -307,6 +316,10 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
         // iCalcreator doesn't expect the 'DATA' key that the Date API gives us.
         continue;
       }
+      if (strtoupper($key) == 'UNTIL') {
+        // iCalcreator expects the 'timestamp' to be array key for UNTIL
+        $value['timestamp'] = strtotime($value['datetime']);
+      }
       if (strtoupper($key) == 'BYDAY') {
         $new_byday = array();
         foreach ($value as $day) {
@@ -318,7 +331,6 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
         }
         $value = $new_byday;
       }
-      
       $new_rrule[$key] = $value;
     }
     return $new_rrule;

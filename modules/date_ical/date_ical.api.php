@@ -74,11 +74,12 @@ function hook_date_ical_feed_ical_vevent_render_alter($vevent, $view, $event_arr
 }
 
 /**
- * Alter an iCal representation of a calendar.
+ * Alter the iCalcreator vcalendar object that will be rendered into an iCal
+ * feed View.
  *
  * This hook allows you to modify the iCal calendar that will be rendered into
  * an iCal feed. You can use this hook to add sections to the generated iCal
- * feeds that the Date iCal module doesn't support etc.
+ * feeds that the Date iCal module doesn't support, etc.
  *
  * @param $vcalendar
  *   The iCalcreator vcalendar object that will be rendered to generate the iCal
@@ -87,12 +88,13 @@ function hook_date_ical_feed_ical_vevent_render_alter($vevent, $view, $event_arr
  * @param $view
  *  The view object that is being executed to render the iCal feed.
  */
-function hook_date_ical_feed_ical_vcalendar_render_alter($vcalendar, $view) {
+function hook_date_ical_feed_ical_vcalendar_render_alter(&$vcalendar, $view) {
 
 }
 
 /**
- * Alter the iCalcreator vcalendar object that was parsed from an iCal feed.
+ * Alter the iCalcreator vcalendar object that was parsed from an imported
+ * iCal feed.
  *
  * @param $calendar
  *   The iCalcreator vcalendar object that was created by parsing the iCal
@@ -148,7 +150,7 @@ function hook_date_ical_icalcreator_component_alter(&$component, &$context) {
 function hook_date_ical_feeds_object_alter(&$value, &$context) {
   // Example of what might be done with this alter hook
   if ($context['property_key'] == 'dtstart') {
-    // Tweak the parsed FeedsDateTime object for the start time.
+    // Tweak the parsed FeedsDateTime object created from the start time.
     // ...
   }
 }

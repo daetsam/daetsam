@@ -783,8 +783,9 @@ div.read-more {
 .widget-ic a {
   color:#FFF;
 }
+
 /* ----------------------------------------------------------------------
-   Región 'Content' - estilos específicos para págians concretas
+   Región 'Content' - clases aplicables a cualquier página
    ---------------------------------------------------------------------- */
 /*
 
@@ -827,6 +828,16 @@ dl.statistics dd {
 }
 dl.statistics dt.statistcs-highlight {
   background:#000;
+}
+
+/* ----------------------------------------------------------------------
+   Región 'Content' - clases aplicables a portada
+   ---------------------------------------------------------------------- */
+.imagen-de-noticia { /* clase para el campo imagen de las noticias en portada */
+  width:30%;
+  float:left;
+}
+.imagen-de-noticia img {
 }
 
 

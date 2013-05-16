@@ -10,7 +10,7 @@
  */
 function date_ical_views_plugins() {
   $includes_path = drupal_get_path('module', 'date_ical') . '/includes';
-
+  
   $data = array(
     'module' => 'date_ical', // This just tells our themes are elsewhere.
     'style' => array(

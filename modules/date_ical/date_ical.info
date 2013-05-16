@@ -28,9 +28,9 @@ files[] = tests/date_ical_parser_date.test
 files[] = tests/date_ical_parser_location.test
 files[] = tests/date_ical_parser_categories.test
 
-; Information added by drupal.org packaging script on 2013-02-12
-version = "7.x-2.5"
+; Information added by drupal.org packaging script on 2013-04-23
+version = "7.x-2.7"
 core = "7.x"
 project = "date_ical"
-datestamp = "1360695885"
+datestamp = "1366753512"
 
