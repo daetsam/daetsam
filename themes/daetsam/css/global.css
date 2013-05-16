@@ -481,6 +481,9 @@ img.logos-redes-sociales {
   float: left; /* Barra de búsqueda alineada con los enlaces de redes sociales */
   margin: 1px 0 0 8px;
 }
+.reg-search-bar input[type="submit"] {
+  display:none;
+}
 
 .reg-search-bar .clearfix:after { /* Para poder poner la barra de búsqueda en la misma línea que los enlaces de redes sociales */
   clear: none;
@@ -833,11 +836,15 @@ dl.statistics dt.statistcs-highlight {
 /* ----------------------------------------------------------------------
    Región 'Content' - clases aplicables a portada
    ---------------------------------------------------------------------- */
-.imagen-de-noticia { /* clase para el campo imagen de las noticias en portada */
+.izquierda-en-mobile { /* clase para el campo imagen de las noticias en portada */
   width:30%;
   float:left;
+  text-align:center;
 }
-.imagen-de-noticia img {
+
+.normal-en-mobile {
+  width:70%;
+  margin-left:30%;
 }
 
 

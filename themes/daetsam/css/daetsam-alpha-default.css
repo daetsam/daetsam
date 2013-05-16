@@ -173,6 +173,19 @@ img.logos-redes-sociales {
 }
 
 
+
+/* ----------------------------------------------------------------------
+   Región 'Content' - clases aplicables a portada
+   ---------------------------------------------------------------------- */
+.izquierda-en-mobile { /* clase para el campo imagen de las noticias en portada */
+  width:100%;
+}
+
+.normal-en-mobile {
+  width:100%%;
+}
+
+
 /* ######################################################################
    Secci—n 'Footer'
    ###################################################################### */
