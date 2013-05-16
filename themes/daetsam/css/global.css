@@ -709,6 +709,29 @@ div.read-more {
 }
 
 
+.nube-de-tags-cortina {
+  position:absolute;
+  background:url('/sites/all/themes/daetsam/images/cortina.png') repeat-x bottom;
+  z-index:1000;
+  width:100%;
+  margin-top:3em;
+  padding-top:5em;
+  height:1.5em;
+  text-align:center;
+  text-transform:lowercase;
+}
+.nube-de-tags-cortina-off {
+  display:none;
+}
+.nube-de-tags-cortina a {
+  display:block;
+  width:100%;
+}
+.nube-de-tags-off {
+  height: 8.5em;
+  overflow: hidden;
+  text-align: justify;
+}
 .nube-de-tags {
   text-align:justify;
 }
@@ -765,6 +788,66 @@ div.read-more {
   margin-right:0;
 }
 }
+
+
+.banner-contenedor {
+  
+}
+
+.banner-individual { /* Clase para la etiqueta 'a' de los banner */
+  display:inline-block;
+  text-align:center;
+  width:100%;
+}
+@media all and (min-width: 240px) and (min-device-width: 240px) {
+.banner-individual { /* Clase para la etiqueta 'a' de los banner */
+  width:49%;
+}
+}
+
+.banner-individual img { /* Clase para las imágenes dentro de los banner */
+  max-width:25%;
+  padding:10px;
+  display:inline-block;
+  vertical-align:middle;
+}
+
+@media all and (min-width: 240px) and (min-device-width: 240px) {
+.banner-individual img { /* Clase para las imágenes dentro de los banner */
+  max-width:20%;
+}
+}
+
+.banner-individual .texto { /* Clase para los textos dentro de los banner */
+  max-width:50%;
+  display:inline-block;
+  vertical-align:middle;
+  padding:10px;
+  text-align:left;
+}
+
+.banner-255 { /* clase para el enlace 255 */
+  background:#D4145A;
+}
+.banner-255 img { /* Clase para las imágenes dentro de los banner */
+  max-width:70%;
+}
+.banner-cdc { /* clase para el enlace cdc */
+  background:#F8F6C5;
+}
+.banner-cursos { /* clase para el enlace cursos */
+  background:#E2EDE1;
+}
+.banner-cultura { /* clase para el enlace cultura */
+  background:#DAEFEE;
+}
+.banner-ic { /* clase para el enlace ic */
+  background:#35D8A2;
+}
+
+
+
+/*
 .widget-container {
   text-align:justify;
 }
@@ -786,6 +869,7 @@ div.read-more {
 .widget-ic a {
   color:#FFF;
 }
+*/
 
 /* ----------------------------------------------------------------------
    Región 'Content' - clases aplicables a cualquier página
@@ -837,14 +921,23 @@ dl.statistics dt.statistcs-highlight {
    Región 'Content' - clases aplicables a portada
    ---------------------------------------------------------------------- */
 .izquierda-en-mobile { /* clase para el campo imagen de las noticias en portada */
+  display:none;
+}
+.normal-en-mobile {
+  width:100%;
+}
+@media all and (min-width: 240px) and (min-device-width: 240px) {
+.izquierda-en-mobile { /* clase para el campo imagen de las noticias en portada */
   width:30%;
   float:left;
   text-align:center;
+  display:block;
 }
 
 .normal-en-mobile {
-  width:70%;
-  margin-left:30%;
+  width:68%;
+  margin-left:32%;
+}
 }
 
 
