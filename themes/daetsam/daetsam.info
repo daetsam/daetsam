@@ -7,6 +7,9 @@ base theme = 'omega'
 
 regions[devregion_especificas] = 'DEV region especificas'
 regions[devregion_cabeceras] = 'DEV cabeceras'
+regions[devregion_menus] = 'DEV menus'
+regions[devregion_logos] = 'DEV logos'
+regions[devregion_bannersportada] = 'DEV banners de portada'
 regions[devregion_widgets] = 'DEV widgets'
 
 regions[page_top] = 'Page Top'
