@@ -5,7 +5,7 @@ function ds_da_2cols() {
     'regions' => array(
       'left' => t('Left'),
       'right' => t('Right'),
-	  'bottom' => t('Bottom')
+	  'footer' => t('Footer')
     ),
     // Add this line if there is a default css file.
     'css' => TRUE,
