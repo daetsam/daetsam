@@ -72,6 +72,39 @@ img.logos-redes-sociales {
   max-height: 60px;
 }
 
+/* ######################################################################
+   Sección 'Content'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Content'
+   ====================================================================== */
+   
+/* ----------------------------------------------------------------------
+   Región 'Content'
+   ---------------------------------------------------------------------- */
+.banner-individual { /* Clase para la etiqueta 'a' de los banner */
+  display:block;
+  width:100%;
+  height:60px;
+}
+.banner-individual img { /* Clase para las imágenes dentro de los banner */
+  height:50px;
+  margin:5px;
+  max-width:30px;
+}
+.banner-individual .texto { /* Clase para los textos dentro de los banner */
+  width:50px;
+}
+
+.banner-255 img { /* Clase para las imágenes dentro del banner 255 */
+  width:50px;
+  height:50px;
+  max-height:none;
+  max-width:none;
+}   
+
+
 /* ----------------------------------------------------------------------
    Regi—n 'Footer Second'
    ---------------------------------------------------------------------- */

@@ -35,6 +35,36 @@
   max-height: 104px;
 }
 
+/* ######################################################################
+   Sección 'Content'
+   ###################################################################### */
+
+/* ======================================================================
+   Zona 'Content'
+   ====================================================================== */
+   
+/* ----------------------------------------------------------------------
+   Región 'Content'
+   ---------------------------------------------------------------------- */
+.banner-individual {
+  height:80px;
+}
+.banner-individual img { /* Clase para las imágenes dentro de los banner */
+  height:60px;
+  margin:10px;
+  max-width:40px;
+}
+
+.banner-individual .texto { /* Clase para los textos dentro de los banner */
+  width:90px;
+}
+
+.banner-255 img { /* Clase para las imágenes dentro del banner 255 */
+  width:60px;
+  height:60px;
+  max-height:none;
+  max-width:none;
+}   
 /* ----------------------------------------------------------------------
    Regi—n 'Footer Second'
    ---------------------------------------------------------------------- */

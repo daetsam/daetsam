@@ -169,20 +169,18 @@ img.logos-redes-sociales {
   width:100%;
 }
 .banner-individual img { /* Clase para las imágenes dentro de los banner */
-  max-width:25%;
-  padding:5%;
   display:inline-block;
   vertical-align:middle;
 }
 .banner-individual .texto { /* Clase para los textos dentro de los banner */
-  max-width:55%;
   display:inline-block;
   vertical-align:middle;
-  padding:5%;
+  padding:5px;
 }
 
-.banner-255 img { /* Clase para las imágenes dentro de los banner */
-  max-width:35%;
+.banner-255 img { /* Clase para las imágenes dentro del banner 255 */
+  max-height:none;
+  max-width:none;
 }
 
 .linea-inferior-fina {

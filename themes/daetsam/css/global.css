@@ -791,30 +791,36 @@ div.read-more {
 
 
 .banner-contenedor {
-  
+  text-align:left;
 }
 
 .banner-individual { /* Clase para la etiqueta 'a' de los banner */
   display:inline-block;
   text-align:center;
   width:100%;
+  height:100px;
+  vertical-align:top;
 }
 @media all and (min-width: 240px) and (min-device-width: 240px) {
 .banner-individual { /* Clase para la etiqueta 'a' de los banner */
-  width:49%;
+  width:160px;
+  height:80px;
 }
 }
 
 .banner-individual img { /* Clase para las imágenes dentro de los banner */
-  max-width:25%;
-  padding:10px;
+  max-height:80px;
+  max-width:40px;
+  margin:10px 0;
   display:inline-block;
   vertical-align:middle;
 }
 
 @media all and (min-width: 240px) and (min-device-width: 240px) {
 .banner-individual img { /* Clase para las imágenes dentro de los banner */
-  max-width:20%;
+  max-height:70px;
+  max-width:40px;
+  margin:5px 0;
 }
 }
 
