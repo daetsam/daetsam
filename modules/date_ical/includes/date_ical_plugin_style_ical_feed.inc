@@ -34,7 +34,7 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
     // Render the feed icon and header tag (except during a View Preview).
     if (empty($this->view->live_preview)) {
       $tooltip = t('Add to My Calendar');
-      $this->view->feed_icon .= theme('date_ical_icon', array('url' => check_url($url), 'tooltip' => $tooltip));
+      $this->view->feed_icon .= theme('date_ical_icon', array('url' => check_url($url), 'tooltip' => $tooltip, 'view' => $this->view));
       drupal_add_html_head_link(array(
         'rel' => 'alternate',
         'type' => 'text/calendar',
@@ -42,6 +42,14 @@ class date_ical_plugin_style_ical_feed extends views_plugin_style {
         'href' => $url
       ));
     }
+  }
+  
+  function option_definition() {
+    $options = parent::option_definition();
+    $options['cal_name'] = array('default' => array());
+    $options['no_calname'] = array('default' => array());
+    $options['disable_webcal'] = array('default' => array());
+    return $options;
   }
   
   function options_form(&$form, &$form_state) {

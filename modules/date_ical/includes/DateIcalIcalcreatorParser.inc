@@ -126,8 +126,12 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
       }
     }
     
+    // DEV NOTES:
+    // Due to the way that the loop after this one manipulates the $components array, and work that gets done in here
+    // is overriden. However, we probably *should* be using this, somehow, since I think it was in the old version
+    // in order to handle non-standard VTIMEZONES. Maybe?
     $components = array();
-    while ($component = $calendar->getComponent('TIMEZONE')) {
+    while ($component = $calendar->getComponent('VTIMEZONE')) {
       $components[$component->getProperty('tzid')] = new DateIcalIcalcreatorComponent($component);
     }
     $result->timezones = $components;
@@ -274,25 +278,23 @@ class DateIcalIcalcreatorParser extends DateIcalFeedsParser {
         if (strtoupper($date_array['tz']) == 'Z') {
           $date_array['tz'] = 'UTC';
         }
-        $tz = new DateTimeZone($date_array['tz']);
+        // Allow modules to alter the timezone string before it gets converted into a DateTimeZone.
+        drupal_alter('date_ical_timezone', $date_array['tz'], $context);
+        
+        try {
+          $tz = new DateTimeZone($date_array['tz']);
+        }
+        catch (Exception $e) {
+          $source->log('parse', '"%tzid" is not recognized by PHP as a valid timezone, so UTC was used instead. Try implementing hook_date_ical_timezone_alter() to fix this problem.',
+            array('%tzid' => $date_array['tz']), WATCHDOG_WARNING);
+          drupal_set_message(t('"%tzid" is not recognized by PHP as a valid timezone, so UTC was used instead. Try implementing hook_date_ical_timezone_alter() to fix this problem.',
+            array('%tzid' => $date_array['tz'])), 'warning');
+        }
       }
-      else {
-        // If there was no timezone in the date array itself, add one if we have one.
-        if (!empty($property['params']['TZID'])) {
-          // Use the timezone from this DATE-TIME component
-          try {
-            $tz = new DateTimeZone($property['params']['TZID']);
-            // note: these should relate to the DateIcalParserResult::$timezones but see comment on property.
-          }
-          catch (Exception $e) {
-            $source->log('parse', 'DATE-TIME TZID "%tzid" not recognized by PHP: %error',
-              array('%tzid' => $property['params']['TZID'], '%error' => $e->getMessage()), WATCHDOG_NOTICE);
-          }
-        }
-        elseif (!empty($result->timezone)) {
-          // Use the timezone that was detected for the entire iCal feed.
-          $tz = $result->timezone;
-        }
+      // If there was no timezone in the date array itself, add one if we have one.
+      else if (!empty($result->timezone)) {
+        // Use the timezone that was detected for the entire iCal feed.
+        $tz = $result->timezone;
       }
       
       // If this iCal object has no DTEND, but it does have a DURATION, emulate DTEND as DTSTART + DURATION.

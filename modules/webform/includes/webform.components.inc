@@ -507,6 +507,69 @@ function webform_component_edit_form($form, $form_state, $node, $component, $clo
     '#weight' => 4,
   );
 
+  // Add conditional fields.
+  $conditional_components = array();
+  $counter = 0;
+  $last_pagebreak_slice = 0;
+  foreach ($node->webform['components'] as $cid => $test_component) {
+    // Only components before the pagebreak can be considered.
+    if ($test_component['type'] == 'pagebreak') {
+      $last_pagebreak_slice = $counter;
+    }
+    if (isset($component['cid']) && $cid == $component['cid']) {
+      break;
+    }
+    if (webform_component_feature($test_component['type'], 'conditional')) {
+      $conditional_components[$cid] = $test_component;
+      $counter++;
+    }
+  }
+  if ($component['type'] != 'pagebreak') {
+    $fieldset_description = t('Create a rule to control whether or not to skip this page.');
+  }
+  else {
+    $fieldset_description = t('Create a rule to control whether or not to show this form element.');
+  }
+  $conditional_components = array_slice($conditional_components, 0, $last_pagebreak_slice, TRUE);
+  $form['conditional'] = array(
+    '#weight' => 10,
+    '#type' => 'fieldset',
+    '#title' => t('Conditional rules'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#description' => t('Create a rule to control whether or not to show this form element.'),
+    '#tree' => FALSE,
+  );
+  $form['conditional']['extra'] = array(
+    '#tree' => TRUE,
+  );
+  $form['conditional']['extra']['conditional_component'] = array(
+    '#type' => 'select',
+    '#title' => t('Component'),
+    '#options' => webform_component_list($node, $conditional_components, FALSE, TRUE),
+    '#description' => t('Select another component to decide whether to show or hide this component. You can only select components occurring before the most recent pagebreak.'),
+    '#default_value' => $component['extra']['conditional_component'],
+  );
+  $form['conditional']['extra']['conditional_operator'] = array(
+    '#type' => 'select',
+    '#title' => t('Operator'),
+    '#options' => array(
+      '=' => t('Is one of'),
+      '!=' => t('Is not one of')
+    ),
+    '#description' => t('Determines whether the list below is inclusive or exclusive.'),
+    '#default_value' => $component['extra']['conditional_operator'],
+  );
+  $form['conditional']['extra']['conditional_values'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Values'),
+    '#description' => t('List values, one per line, that will trigger this action. If you leave this blank, this component will always display.'),
+    '#default_value' => $component['extra']['conditional_values'],
+  );
+  if (empty($conditional_components)) {
+    $form['conditional']['#access'] = FALSE;
+  }
+
   // Add the fields specific to this component type:
   $additional_form_elements = (array) webform_component_invoke($component['type'], 'edit', $component);
   if (empty($additional_form_elements)) {
@@ -541,13 +604,6 @@ function webform_component_edit_form($form, $form_state, $node, $component, $clo
     '#value' => t('Save component'),
     '#weight' => 50,
   );
-
-  // Remove fieldsets without any child form controls.
-  foreach ($form as $group_key => $group) {
-    if (isset($group['#type']) && $group['#type'] === 'fieldset' && !element_children($group)) {
-      unset($form[$group_key]);
-    }
-  }
 
   return $form;
 }
@@ -777,7 +833,7 @@ function webform_component_delete($node, $component) {
     $submissions = webform_get_submissions($node->nid);
     foreach ($submissions as $submission) {
       if (isset($submission->data[$component['cid']])) {
-        webform_component_invoke($component['type'], 'delete', $component, $submission->data[$component['cid']]);
+        webform_component_invoke($component['type'], 'delete', $component, $submission->data[$component['cid']]['value']);
       }
     }
   }
@@ -854,22 +910,8 @@ function webform_component_feature($type, $feature) {
     'group' => FALSE,
     'attachment' => FALSE,
     'private' => TRUE,
-    'views_range' => FALSE,
   );
   return isset($components[$type]['features'][$feature]) ? $components[$type]['features'][$feature] : !empty($defaults[$feature]);
-}
-
-/**
- * Get a component property from the component definition.
- *
- * @see hook_webform_component_info()
- */
-function webform_component_property($type, $property) {
-  $components = webform_components();
-  $defaults = array(
-    'conditional_type' => 'string',
-  );
-  return isset($components[$type][$property]) ? $components[$type][$property] : $defaults[$property];
 }
 
 /**
@@ -1030,6 +1072,11 @@ function webform_component_defaults(&$component) {
         $component['extra'][$extra] = $default;
       }
     }
+    $component['extra'] += array(
+      'conditional_component' => '',
+      'conditional_operator' => '=',
+      'conditional_values' => '',
+    );
   }
 }
 

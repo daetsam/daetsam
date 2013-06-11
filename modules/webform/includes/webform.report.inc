@@ -224,7 +224,7 @@ function theme_webform_results_table($variables) {
   $rows = array();
   $cell = array();
 
-  // This header has to be generated seperately so we can add the SQL necessary.
+  // This header has to be generated separately so we can add the SQL necessary.
   // to sort the results.
   $header = theme('webform_results_table_header', array('node' => $node));
 
@@ -238,7 +238,7 @@ function theme_webform_results_table($variables) {
 
     // Generate a cell for each component.
     foreach ($node->webform['components'] as $component) {
-      $data = isset($submission->data[$component['cid']]) ? $submission->data[$component['cid']] : NULL;
+      $data = isset($submission->data[$component['cid']]['value']) ? $submission->data[$component['cid']]['value'] : NULL;
       $submission_output = webform_component_invoke($component['type'], 'table', $component, $data);
       if ($submission_output !== NULL) {
         $component_headers[] = check_plain($component['name']);
@@ -781,7 +781,7 @@ function webform_results_export($node, $format = 'delimited', $options = array()
       if (isset($node->webform['components'][$cid])) {
         $component = $node->webform['components'][$cid];
         // Let each component add its data.
-        $raw_data = isset($submission->data[$cid]) ? $submission->data[$cid] : NULL;
+        $raw_data = isset($submission->data[$cid]['value']) ? $submission->data[$cid]['value'] : NULL;
         if (webform_component_feature($component['type'], 'csv')) {
           $data = webform_component_invoke($component['type'], 'csv_data', $component, $options, $raw_data);
           if (is_array($data)) {

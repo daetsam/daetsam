@@ -154,3 +154,28 @@ function hook_date_ical_feeds_object_alter(&$value, &$context) {
     // ...
   }
 }
+
+/**
+ * Alter the timezone string before it gets converted into a DateTimeZone object.
+ * This is useful for when an iCal feed you're trying to import uses deprecated
+ * timezone names, like "Eastern Standard Time", rather than "America/New_York".
+ *
+ * @param $tz_string
+ *   The timezone sting to be altered (e.g. "America/Los_Angeles").
+ * @param $context
+ *   An associative array of context, with the following keys and values:
+ *   - 'property_key': Inernal, parser-specific identifier for this property.
+ *   - 'property': "RAW" value of this property.
+ *   - 'item': The DateIcalComponentInterface object that holds the unparsed component.
+ *   - 'parser_result': The parsed result of the whole Calendar.
+ *   - 'feeds_source': Contains all the metadata about the configuration of this Feed.
+ */
+function hook_date_ical_timezone_alter(&$tz_string, &$context) {
+  // Example of what might be done with this alter hook:
+  if ($tz_string == 'Eastern Standard Time') {
+    // "Eastern Standard Time" is a deprecated timezone string, which PHP doesn't
+    // recognize. It's (essentially) equivalent to "America/New_York", though,
+    // which PHP is fine with.
+    $tz_string = 'America/New_York';
+  }
+}

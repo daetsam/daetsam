@@ -19,6 +19,11 @@ function webform_emails_form($form, $form_state, $node) {
   $form['#node'] = $node;
   $form['components'] = array();
 
+  $form['nid'] = array(
+    '#type' => 'value',
+    '#value' => $node->nid,
+  );
+
   foreach ($node->webform['emails'] as $eid => $email) {
     $email_addresses = array_filter(explode(',', check_plain($email['email'])));
     foreach ($email_addresses as $key => $email_address) {
@@ -164,7 +169,10 @@ function webform_email_edit_form($form, $form_state, $node, $email = array()) {
   $form['#attached']['js'][] = array('data' => array('webform' => array('revertConfirm' => t('Are you sure you want to revert any changes to your template back to the default?'))), 'type' => 'setting');
 
   $form['#tree'] = TRUE;
-  $form['#node'] = $node;
+  $form['node'] = array(
+    '#type' => 'value',
+    '#value' => $node,
+  );
   $form['eid'] = array(
     '#type' => 'value',
     '#value' => isset($email['eid']) ? $email['eid'] : NULL,
@@ -276,7 +284,7 @@ function webform_email_edit_form($form, $form_state, $node, $email = array()) {
   );
 
   $form['template']['tokens'] = array(
-    '#markup' => theme('webform_token_help', array('groups' => array('node', 'submission'))),
+    '#markup' => theme('webform_token_help', array('groups' => 'all')),
   );
 
   $form['template']['components'] = array(
@@ -286,7 +294,7 @@ function webform_email_edit_form($form, $form_state, $node, $email = array()) {
     '#default_value' => array_diff(array_keys($node->webform['components']), $email['excluded_components']),
     '#multiple' => TRUE,
     '#size' => 10,
-    '#description' => t('The selected components will be included in the [submission:values] token. Individual values may still be printed if explicitly specified as a [submission:values:?] in the template.'),
+    '#description' => t('The selected components will be included in the %email_values token. Individual values may still be printed if explicitly specified as a %email[key] in the template.'),
     '#process' => array('webform_component_select'),
   );
 
@@ -367,7 +375,7 @@ function webform_email_address_validate($form, &$form_state) {
     else {
       $emails = array_filter(explode(',', $email));
       foreach ($emails as $email) {
-        if (!valid_email_address(_webform_filter_values(trim($email), $form['#node']))) {
+        if (!valid_email_address(trim($email))) {
           form_set_error('email_custom', t('The entered e-mail address "@email" does not appear valid.', array('@email' => $email)));
         }
       }
@@ -379,7 +387,7 @@ function webform_email_address_validate($form, &$form_state) {
  * Validate handler for webform_email_edit_form().
  */
 function webform_email_edit_form_validate($form, &$form_state) {
-  if ($form_state['values']['from_address_option'] == 'custom' && !valid_email_address(_webform_filter_values($form_state['values']['from_address_custom'], $form['#node']))) {
+  if ($form_state['values']['from_address_option'] == 'custom' && !valid_email_address($form_state['values']['from_address_custom'])) {
     form_set_error('from_address_custom', t('The entered e-mail address "@email" does not appear valid.', array('@email' => $form_state['values']['from_address_custom'])));
   }
 }
@@ -389,7 +397,7 @@ function webform_email_edit_form_validate($form, &$form_state) {
  */
 function webform_email_edit_form_submit($form, &$form_state) {
   // Ensure a webform record exists.
-  $node = $form['#node'];
+  $node = $form_state['values']['node'];
   webform_ensure_record($node);
 
   // Merge the e-mail, name, address, and subject options into single values.
@@ -427,7 +435,7 @@ function webform_email_edit_form_submit($form, &$form_state) {
 
   // Save the list of included components.
   // We actually maintain an *exclusion* list, so any new components will
-  // default to being included in the [submission:values] token until unchecked.
+  // default to being included in the %email_values token until unchecked.
   $included = array_keys(array_filter((array) $form_state['values']['components']));
   $excluded = array_diff(array_keys($node->webform['components']), $included);
   $email['excluded_components'] = $excluded;

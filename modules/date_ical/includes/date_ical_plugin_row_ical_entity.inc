@@ -27,6 +27,7 @@ class date_ical_plugin_row_ical_entity extends views_plugin_row {
   function option_definition() {
     $options = parent::option_definition();
     $options['date_field'] = array('default' => array());
+    $options['summary_field'] = array('default' => array());
     $options['location_field'] = array('default' => array());
     return $options;
   }

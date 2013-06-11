@@ -115,7 +115,7 @@ function hook_webform_submission_load(&$submissions) {
 function hook_webform_submission_presave($node, &$submission) {
   // Update some component's value before it is saved.
   $component_id = 4;
-  $submission->data[$component_id][0] = 'foo';
+  $submission->data[$component_id]['value'][0] = 'foo';
 }
 
 /**
@@ -408,10 +408,6 @@ function hook_webform_component_info() {
       // If this component saves a file that can be used as an e-mail
       // attachment. Defaults to FALSE.
       'attachment' => FALSE,
-
-      // If this component reflects a time range and should use labels such as
-      // "Before" and "After" when exposed as filters in Views module.
-      'views_range' => FALSE,
     ),
     'file' => 'components/textfield.inc',
   );
