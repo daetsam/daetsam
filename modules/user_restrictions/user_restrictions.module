@@ -103,6 +103,17 @@ function user_restrictions_user_restrictions_info($id, $arg1 = NULL, $arg2 = NUL
           return array('name' => $account->name);
 
         case 'profile':
+          if(isset($arg1['values']['mail'])) {
+            return array(
+              'mail' => $arg1['values']['mail'],
+              'name' => $arg1['values']['name'],
+            );
+          } else {
+            return array(
+            'mail' => $arg1['user']->mail,
+            'name' => $arg1['user']->name,
+            );
+          }
         case 'register':
           return array(
             'mail' => $arg1['values']['mail'],
@@ -162,7 +173,7 @@ function user_restrictions_login_form_validate($form, &$form_state) {
  */
 function user_restrictions_user_profile_form_validate($form, &$form_state) {
   $account = $form_state['user'];
-  if (user_access('bypass user restriction rules', $account)) {
+  if (user_access('bypass user restriction rules') || user_access('bypass user restriction rules', $account)) {
     return;
   }
 
@@ -178,6 +189,10 @@ function user_restrictions_user_profile_form_validate($form, &$form_state) {
  * @see user_register_form()
  */
 function user_restrictions_user_register_form_validate($form, &$form_state) {
+  if (user_access('bypass user restriction rules')) {
+    return;
+  }
+
   $error = UserRestrictions::check($form_state, 'register');
   if ($error['message']) {
     form_set_error($error['field'], $error['message']);
